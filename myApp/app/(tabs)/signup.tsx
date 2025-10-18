@@ -1,3 +1,5 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 export const unstable_settings = { 
   headerShown: false, 
   tabBarStyle: { display: "none" } 
@@ -17,10 +19,50 @@ export default function SignUp() {
   const [pesha, setPesha] = useState("");
   const [gjatesia, setGjatesia] = useState("");
 
-  const handleSignUp = () => {
-    console.log("User registered:", { emri, mbiemri, emaili, fjalkalimi, ditelindja, pesha, gjatesia });
-    router.push("/(tabs)/login");
+ const handleSignUp = async () => {
+  if (!emri || !mbiemri || !emaili || !fjalkalimi) {
+    alert("Ju lutem plotësoni të gjitha fushat!");
+    return;
+  }
+
+  // Krijo objektin e përdoruesit të ri
+  const newUser = {
+    emri,
+    mbiemri,
+    emaili,
+    fjalkalimi,
+    ditelindja,
+    pesha,
+    gjatesia,
   };
+
+  try {
+    // Merr listën ekzistuese të përdoruesve
+    const existingUsers = JSON.parse((await AsyncStorage.getItem("users")) || "[]");
+
+    // Shto përdoruesin e ri
+    existingUsers.push(newUser);
+
+    // Ruaji të gjithë përdoruesit në AsyncStorage
+    await AsyncStorage.setItem("users", JSON.stringify(existingUsers));
+
+    //  Ruaj përdoruesin që u regjistrua si përdorues aktual
+    await AsyncStorage.setItem("currentUser", JSON.stringify(newUser));
+
+    console.log("User registered:", newUser);
+    
+    
+     // Brenda handleSignUp:
+     const userData = { emri, mbiemri, emaili, ditelindja, pesha, gjatesia };
+     await AsyncStorage.setItem("userData", JSON.stringify(userData));
+    // Kalo në faqen e profilit (ose dashboard)
+    router.push("/profile");
+  } catch (error) {
+    console.error("Gabim gjatë regjistrimit:", error);
+    alert("Ndodhi një gabim gjatë regjistrimit.");
+  }
+};
+
 
   return (
     <View style={styles.container}>
