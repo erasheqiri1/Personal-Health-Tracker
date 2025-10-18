@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import {
   SafeAreaView,
@@ -7,11 +8,13 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
+  Alert,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function WeightliftingScreen() {
   const router = useRouter();
@@ -47,9 +50,23 @@ export default function WeightliftingScreen() {
   const [minutes, setMinutes] = useState(30);
   const [calories, setCalories] = useState<number | null>(null);
 
-  const calcCalories = () => {
-    const total = minutes * 6; // shumë e thjeshtë: 6 kal/min për peshë
+  const calcCalories = async () => {
+    const total = minutes * 6; // thjeshtëzim: 6 kcal/min për peshë
     setCalories(total);
+
+    const today = new Date().toISOString().slice(0, 10);
+    const key = `workout_kcal_${today}`;
+
+    try {
+      const prev = await AsyncStorage.getItem(key);
+      const prevNum = prev ? Number(prev) : 0;
+      const next = prevNum + total;
+      await AsyncStorage.setItem(key, String(next));
+      Alert.alert('U ruajt', `U shtuan ${total} kcal në totalin e ditës.`);
+    } catch (e) {
+      console.warn('Nuk u ruajtën kaloritë e workouts', e);
+      Alert.alert('Gabim', 'S’u ruajtën kaloritë. Provo përsëri.');
+    }
   };
 
   return (
@@ -243,3 +260,4 @@ const styles = StyleSheet.create({
     color: COLORS.textDark,
   },
 });
+

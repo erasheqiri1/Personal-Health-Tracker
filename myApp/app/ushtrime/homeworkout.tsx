@@ -1,17 +1,14 @@
+
 import React, { useState } from 'react';
 import {
-  SafeAreaView,
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-  ScrollView,
+  SafeAreaView, View, Text, TouchableOpacity, StyleSheet, Dimensions,
+  ScrollView, Alert
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeWorkoutScreen() {
   const router = useRouter();
@@ -50,19 +47,29 @@ export default function HomeWorkoutScreen() {
     { title: 'Shadow Boxing', icon: 'boxing-glove' },
   ];
 
-  // ==== Pjesa e llogaritjes ====
   const [selectedExercise, setSelectedExercise] = useState(EXERCISES[0].title);
   const [minutes, setMinutes] = useState(20);
   const [calories, setCalories] = useState<number | null>(null);
 
-  const calcCalories = () => {
-    const total = minutes * 8; // mesatarisht 8 kcal/min për workout
+  const calcCalories = async () => {
+    const total = minutes * 8; // 8 kcal/min
     setCalories(total);
+
+    const today = new Date().toISOString().slice(0, 10);
+    const key = `workout_kcal_${today}`;
+
+    try {
+      const prev = await AsyncStorage.getItem(key);
+      const prevNum = prev ? Number(prev) : 0;
+      await AsyncStorage.setItem(key, String(prevNum + total));
+      Alert.alert('OK', `U shtuan ${total} kcal për sot.`);
+    } catch (e) {
+      Alert.alert('Gabim', 'S’u ruajtën kaloritë.');
+    }
   };
 
   return (
     <SafeAreaView style={styles.safe}>
-      {/* Background */}
       <View style={styles.bgLayer} pointerEvents="none">
         {BG_ICONS.map((icon, i) => {
           const size = Math.round(Math.min(W, H) * icon.sizeMul);
@@ -85,7 +92,6 @@ export default function HomeWorkoutScreen() {
       </View>
 
       <View style={[styles.container, { paddingTop: Math.max(12, insets.top * 0.3) }]}>
-        {/* Header */}
         <View style={styles.headerRow}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
             <MaterialCommunityIcons name="chevron-left" size={26} color="#fff" />
@@ -94,12 +100,8 @@ export default function HomeWorkoutScreen() {
           <View style={{ width: 36 }} />
         </View>
 
-        {/* Tabs */}
         <View style={styles.tabs}>
-          <TouchableOpacity
-            style={styles.tab}
-            onPress={() => router.replace('/ushtrime/weightlifting')}
-          >
+          <TouchableOpacity style={styles.tab} onPress={() => router.replace('/ushtrime/weightlifting')}>
             <Text style={styles.tabText}>Weightlifting</Text>
           </TouchableOpacity>
           <View style={[styles.tab, styles.tabActive]}>
@@ -107,9 +109,7 @@ export default function HomeWorkoutScreen() {
           </View>
         </View>
 
-        {/* Krejt faqja scrollable */}
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
-          {/* Lista e ushtrimeve */}
           {EXERCISES.map((item, i) => (
             <View key={i} style={styles.rowCard}>
               <View style={styles.rowIconWrap}>
@@ -120,40 +120,24 @@ export default function HomeWorkoutScreen() {
             </View>
           ))}
 
-          {/* Hapësirë mes listës dhe formës */}
           <View style={{ height: 30 }} />
 
-          {/* ==== Zgjedh ushtrimin & llogarit kaloritë ==== */}
           <View style={styles.card}>
             <Text style={styles.label}>Zgjedh çka ke ushtru sot</Text>
-            <Picker
-              selectedValue={selectedExercise}
-              onValueChange={(v) => setSelectedExercise(v)}
-              dropdownIconColor={COLORS.green}
-            >
-              {EXERCISES.map((ex) => (
-                <Picker.Item key={ex.title} label={ex.title} value={ex.title} />
-              ))}
+            <Picker selectedValue={selectedExercise} onValueChange={(v) => setSelectedExercise(v)} dropdownIconColor={COLORS.green}>
+              {EXERCISES.map((ex) => (<Picker.Item key={ex.title} label={ex.title} value={ex.title} />))}
             </Picker>
 
             <Text style={[styles.label, { marginTop: 8 }]}>Për sa minuta?</Text>
-            <Picker
-              selectedValue={minutes}
-              onValueChange={(v) => setMinutes(Number(v))}
-              dropdownIconColor={COLORS.green}
-            >
-              {[10, 20, 30, 40, 50, 60].map((m) => (
-                <Picker.Item key={m} label={`${m} min`} value={m} />
-              ))}
+            <Picker selectedValue={minutes} onValueChange={(v) => setMinutes(Number(v))} dropdownIconColor={COLORS.green}>
+              {[10, 20, 30, 40, 50, 60].map((m) => (<Picker.Item key={m} label={`${m} min`} value={m} />))}
             </Picker>
 
             <TouchableOpacity style={styles.calcBtn} onPress={calcCalories}>
               <Text style={styles.calcText}>Llogarit kaloritë</Text>
             </TouchableOpacity>
 
-            {calories !== null && (
-              <Text style={styles.result}>Ju keni harxhuar rreth {calories} kcal 🔥</Text>
-            )}
+            {calories !== null && <Text style={styles.result}>Rreth {calories} kcal 🔥</Text>}
           </View>
         </ScrollView>
       </View>
@@ -161,93 +145,26 @@ export default function HomeWorkoutScreen() {
   );
 }
 
-const COLORS = {
-  green: '#355E3B',
-  page: '#F7F4E9',
-  card: '#E6DFC5',
-  textDark: '#2E2E2E',
-  cardSoft: '#EFE8CF',
-};
+const COLORS = { green: '#355E3B', page: '#F7F4E9', card: '#E6DFC5', textDark: '#2E2E2E', cardSoft: '#EFE8CF' };
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: COLORS.page },
   bgLayer: { ...StyleSheet.absoluteFillObject, zIndex: -1 },
   container: { flex: 1, paddingHorizontal: 16 },
   headerRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
-  backBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    backgroundColor: COLORS.green,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerTitle: {
-    flex: 1,
-    textAlign: 'center',
-    fontWeight: '900',
-    fontSize: 18,
-    color: COLORS.textDark,
-  },
-  tabs: {
-    flexDirection: 'row',
-    alignSelf: 'center',
-    backgroundColor: '#d9d3bd',
-    padding: 4,
-    borderRadius: 12,
-    marginBottom: 12,
-  },
+  backBtn: { width: 36, height: 36, borderRadius: 8, backgroundColor: COLORS.green, alignItems: 'center', justifyContent: 'center' },
+  headerTitle: { flex: 1, textAlign: 'center', fontWeight: '900', fontSize: 18, color: COLORS.textDark },
+  tabs: { flexDirection: 'row', alignSelf: 'center', backgroundColor: '#d9d3bd', padding: 4, borderRadius: 12, marginBottom: 12 },
   tab: { paddingVertical: 8, paddingHorizontal: 14, borderRadius: 10 },
   tabActive: { backgroundColor: COLORS.green },
   tabText: { fontWeight: '700', letterSpacing: 0.3, color: COLORS.textDark },
   tabTextActive: { color: '#fff' },
-
-  // Ushtrimet
-  rowCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.cardSoft,
-    borderRadius: 16,
-    padding: 14,
-    elevation: 3,
-    marginBottom: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 5,
-    shadowOffset: { width: 0, height: 2 },
-  },
-  rowIconWrap: {
-    width: 56,
-    height: 56,
-    borderRadius: 12,
-    backgroundColor: COLORS.card,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
+  rowCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.cardSoft, borderRadius: 16, padding: 14, elevation: 3, marginBottom: 10 },
+  rowIconWrap: { width: 56, height: 56, borderRadius: 12, backgroundColor: COLORS.card, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
   rowTitle: { flex: 1, fontSize: 17, fontWeight: '800', color: COLORS.textDark },
-
-  // Pjesa e llogaritjes poshtë
-  card: {
-    backgroundColor: COLORS.cardSoft,
-    borderRadius: 16,
-    padding: 14,
-    marginBottom: 14,
-    elevation: 3,
-  },
+  card: { backgroundColor: COLORS.cardSoft, borderRadius: 16, padding: 14, marginBottom: 14, elevation: 3 },
   label: { fontWeight: '700', color: COLORS.textDark, marginBottom: 4 },
-  calcBtn: {
-    backgroundColor: COLORS.green,
-    paddingVertical: 10,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 10,
-  },
+  calcBtn: { backgroundColor: COLORS.green, paddingVertical: 10, borderRadius: 10, alignItems: 'center', marginTop: 10 },
   calcText: { color: '#fff', fontWeight: '800' },
-  result: {
-    marginTop: 10,
-    fontSize: 16,
-    fontWeight: '800',
-    color: COLORS.textDark,
-  },
+  result: { marginTop: 10, fontSize: 16, fontWeight: '800', color: COLORS.textDark },
 });
