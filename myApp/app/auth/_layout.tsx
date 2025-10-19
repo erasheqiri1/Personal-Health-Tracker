@@ -8,8 +8,15 @@ export default function AuthLayout() {
       headerStyle: { backgroundColor: '#355E3B' },
       headerTintColor: 'white',
       contentStyle: { backgroundColor: '#F9F6E8' },
+
+      
     }}/>
+    
   );
+  <Stack>
+  <Stack.Screen name="signup" options={{ headerShown: false }} />
+</Stack>
+
 }
 
 
