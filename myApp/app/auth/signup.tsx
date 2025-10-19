@@ -366,3 +366,30 @@ export default function Signup() {
     </ScrollView>
   );
 }
+const s = StyleSheet.create({
+  wrap: { flexGrow: 1, justifyContent: 'center', padding: 24, backgroundColor: '#F9F6E8' },
+  brand: { alignItems: 'center', marginBottom: 24 },
+  runCircle: {
+    width: 90, height: 90, borderRadius: 45, backgroundColor: '#355E3B',
+    alignItems: 'center', justifyContent: 'center', marginBottom: 6,
+  },
+  brandTitle: { marginTop: 8, fontSize: 18, fontWeight: '800', color: '#355E3B', letterSpacing: 0.5, textTransform: 'uppercase' },
+  h1: { fontSize: 22, color: '#355E3B', fontWeight: '800', marginBottom: 16 },
+  input: { backgroundColor: '#F1EFDF', borderRadius: 10, padding: 14, marginBottom: 12, borderWidth: 1, borderColor: '#D7D2B8' },
+  label: { fontWeight: '700', color: '#355E3B', marginBottom: 6, marginTop: 4 },
+  selectLike: { justifyContent: 'center' },
+  placeholder: { color: '#9aa09a' },
+  inputValue: { color: '#355E3B', fontWeight: '600' },
+  row: { flexDirection: 'row' },
+  col: { flex: 1 },
+  checkboxRow: { flexDirection: 'row', alignItems: 'center', marginVertical: 12 },
+  checkbox: { width: 22, height: 22, borderRadius: 6, borderWidth: 1.5, borderColor: '#355E3B', backgroundColor: '#F1EFDF', alignItems: 'center', justifyContent: 'center', marginRight: 10 },
+  checkboxOn: { backgroundColor: '#355E3B' },
+  checkmark: { color: 'white', fontWeight: '900', lineHeight: 18 },
+  checkboxTxt: { color: '#355E3B', fontWeight: '600' },
+  primary: { backgroundColor: '#355E3B', padding: 14, borderRadius: 10, alignItems: 'center' },
+  primaryTxt: { color: 'white', fontWeight: '700', letterSpacing: 1 },
+  loginRow: { flexDirection: 'row', justifyContent: 'center', marginTop: 16 },
+  loginTxt: { color: '#5a5a5a' },
+  loginLink: { color: '#355E3B', fontWeight: '800' },
+});
