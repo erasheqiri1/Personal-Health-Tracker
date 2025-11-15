@@ -428,22 +428,28 @@ export default function WeightliftingScreen() {
           <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
             <MaterialCommunityIcons name="chevron-left" size={26} color="#fff" />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Home Workout</Text>
+          <Text style={styles.headerTitle}>Weightlifting</Text>
           <View style={{ width: 36 }} />
         </View>
 
         {/* Tabs */}
         <View style={styles.tabs}>
-          <TouchableOpacity
-            style={styles.tab}
-            onPress={() => router.replace('/ushtrime/weightlifting')}
-          >
-            <Text style={styles.tabText}>Weightlifting</Text>
-          </TouchableOpacity>
-          <View style={[styles.tab, styles.tabActive]}>
-            <Text style={[styles.tabText, styles.tabTextActive]}>Home Workout</Text>
-          </View>
-        </View>
+  {/* Weightlifting = aktiv në këtë screen */}
+  <View style={[styles.tab, styles.tabActive]}>
+    <Text style={[styles.tabText, styles.tabTextActive]}>
+      Weightlifting
+    </Text>
+  </View>
+
+  {/* homeworkout = buton që të çon në screen tjetër */}
+  <TouchableOpacity
+    style={styles.tab}
+    onPress={() => router.replace('/ushtrime/homeworkout')}
+  >
+    <Text style={styles.tabText}>homeworkout</Text>
+  </TouchableOpacity>
+</View>
+
 
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
           {/* Ushtrimet */}

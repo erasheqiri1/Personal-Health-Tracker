@@ -595,9 +595,9 @@ export default function WeightliftingAdmin() {
       <View style={{ flex: 1 }}>
         <Text style={s.sectionText}>
           {item.section === 'upper'
-            ? 'Trup i sipërm'
+            ? 'Pjesa e sipërm'
             : item.section === 'lower'
-            ? 'Trup i poshtëm'
+            ? 'Pjesa e poshtme'
             : 'Gjithë trupi'}
         </Text>
         <Text style={s.title}>{item.title}</Text>
@@ -661,7 +661,7 @@ export default function WeightliftingAdmin() {
               section === 'upper' && s.sectionChipTextActive,
             ]}
           >
-            Trup i sipërm
+            Pjesa e sipërme
           </Text>
         </Pressable>
         <Pressable
@@ -674,7 +674,7 @@ export default function WeightliftingAdmin() {
               section === 'lower' && s.sectionChipTextActive,
             ]}
           >
-            Trup i poshtëm
+            pjesa e poshtme
           </Text>
         </Pressable>
         <Pressable
@@ -749,6 +749,132 @@ export default function WeightliftingAdmin() {
   );
 }
 
+// const s = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: COLORS.bg,
+//     padding: 16,
+//   },
+//   header: {
+//     fontSize: 20,
+//     fontWeight: '700',
+//     color: COLORS.green,
+//     marginBottom: 8,
+//   },
+//   subHeader: {
+//     fontSize: 16,
+//     fontWeight: '700',
+//     marginBottom: 8,
+//     color: COLORS.textDark,
+//   },
+//   divider: {
+//     height: 1,
+//     backgroundColor: '#D0C8AA',
+//     marginVertical: 12,
+//   },
+//   row: {
+//     flexDirection: 'row',
+//     backgroundColor: COLORS.card,
+//     borderRadius: 10,
+//     padding: 10,
+//     marginBottom: 8,
+//   },
+//   sectionText: {
+//     fontSize: 12,
+//     fontWeight: '700',
+//     color: COLORS.green,
+//     marginBottom: 2,
+//   },
+//   title: {
+//     fontSize: 14,
+//     fontWeight: '700',
+//     color: COLORS.textDark,
+//   },
+//   subtitle: {
+//     fontSize: 12,
+//     color: '#555',
+//   },
+//   kcal: {
+//     marginTop: 4,
+//     fontSize: 12,
+//     fontWeight: '700',
+//     color: COLORS.green,
+//   },
+//   iconName: {
+//     fontSize: 11,
+//     color: '#777',
+//     marginTop: 2,
+//   },
+//   actions: {
+//     justifyContent: 'space-between',
+//     marginLeft: 8,
+//   },
+//   smallBtn: {
+//     backgroundColor: COLORS.green,
+//     borderRadius: 8,
+//     paddingHorizontal: 10,
+//     paddingVertical: 6,
+//   },
+//   smallBtnText: {
+//     color: '#fff',
+//     fontSize: 12,
+//     fontWeight: '700',
+//   },
+//   sectionRow: {
+//     flexDirection: 'row',
+//     marginBottom: 8,
+//   },
+//   sectionChip: {
+//     flex: 1,
+//     backgroundColor: COLORS.cardSoft,
+//     paddingVertical: 8,
+//     marginRight: 6,
+//     borderRadius: 20,
+//     alignItems: 'center',
+//   },
+//   sectionChipActive: {
+//     backgroundColor: COLORS.green,
+//   },
+//   sectionChipText: {
+//     fontSize: 13,
+//     color: COLORS.textDark,
+//   },
+//   sectionChipTextActive: {
+//     color: '#fff',
+//     fontWeight: '700',
+//   },
+//   input: {
+//     backgroundColor: '#FFFFFF',
+//     borderRadius: 10,
+//     paddingHorizontal: 12,
+//     paddingVertical: 10,
+//     borderWidth: 1,
+//     borderColor: '#D0C8AA',
+//     marginBottom: 8,
+//     fontSize: 14,
+//   },
+//   saveBtn: {
+//     backgroundColor: COLORS.green,
+//     borderRadius: 12,
+//     paddingVertical: 12,
+//     alignItems: 'center',
+//     marginTop: 4,
+//   },
+//   saveBtnText: {
+//     color: '#fff',
+//     fontWeight: '800',
+//   },
+//   error: {
+//     color: '#C0392B',
+//     fontSize: 13,
+//     marginBottom: 4,
+//   },
+//   success: {
+//     color: '#1E8449',
+//     fontSize: 13,
+//     marginBottom: 4,
+//   },
+// });
 const s = StyleSheet.create({
   container: {
     flex: 1,
@@ -756,13 +882,13 @@ const s = StyleSheet.create({
     padding: 16,
   },
   header: {
-    fontSize: 20,
+    fontSize: 28,            // ishte 20
     fontWeight: '700',
     color: COLORS.green,
     marginBottom: 8,
   },
   subHeader: {
-    fontSize: 16,
+    fontSize: 22,            // ishte 16
     fontWeight: '700',
     marginBottom: 8,
     color: COLORS.textDark,
@@ -780,28 +906,28 @@ const s = StyleSheet.create({
     marginBottom: 8,
   },
   sectionText: {
-    fontSize: 12,
+    fontSize: 16,            // ishte 12
     fontWeight: '700',
     color: COLORS.green,
     marginBottom: 2,
   },
   title: {
-    fontSize: 14,
+    fontSize: 18,            // ishte 14
     fontWeight: '700',
     color: COLORS.textDark,
   },
   subtitle: {
-    fontSize: 12,
+    fontSize: 16,            // ishte 12
     color: '#555',
   },
   kcal: {
     marginTop: 4,
-    fontSize: 12,
+    fontSize: 16,            // ishte 12
     fontWeight: '700',
     color: COLORS.green,
   },
   iconName: {
-    fontSize: 11,
+    fontSize: 14,            // ishte 11
     color: '#777',
     marginTop: 2,
   },
@@ -817,7 +943,7 @@ const s = StyleSheet.create({
   },
   smallBtnText: {
     color: '#fff',
-    fontSize: 12,
+    fontSize: 16,            // ishte 12
     fontWeight: '700',
   },
   sectionRow: {
@@ -836,7 +962,7 @@ const s = StyleSheet.create({
     backgroundColor: COLORS.green,
   },
   sectionChipText: {
-    fontSize: 13,
+    fontSize: 16,            // ishte 13
     color: COLORS.textDark,
   },
   sectionChipTextActive: {
@@ -851,7 +977,7 @@ const s = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#D0C8AA',
     marginBottom: 8,
-    fontSize: 14,
+    fontSize: 16,            // ishte 14
   },
   saveBtn: {
     backgroundColor: COLORS.green,
@@ -863,15 +989,16 @@ const s = StyleSheet.create({
   saveBtnText: {
     color: '#fff',
     fontWeight: '800',
+    fontSize: 16,            // shtuar për konsistencë
   },
   error: {
     color: '#C0392B',
-    fontSize: 13,
+    fontSize: 16,            // ishte 13
     marginBottom: 4,
   },
   success: {
     color: '#1E8449',
-    fontSize: 13,
+    fontSize: 16,            // ishte 13
     marginBottom: 4,
   },
 });

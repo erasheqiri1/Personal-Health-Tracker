@@ -1,4 +1,4 @@
-// app/admin/humb_pesh_admin.jsx
+
 import { Stack } from 'expo-router';
 import {
   addDoc,
@@ -46,36 +46,8 @@ export default function MbajPeshAdmin() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // READ – leximi i ushqimeve për planin "humb"
-  // useEffect(() => {
-  //   setLoading(true);
-  //   const q = query(
-  //     collection(db, 'meals'),
-  //     where('plan', '==', PLAN_KEY),
-  //     orderBy('section')
-  //   );
 
-  //   const unsub = onSnapshot(
-  //     q,
-  //     snapshot => {
-  //       const list = snapshot.docs.map(d => ({
-  //         id: d.id,
-  //         ...d.data(),
-  //       }));
-  //       setMeals(list);
-  //       setLoading(false);
-  //       setError('');
-  //     },
-  //     err => {
-  //       console.log('Firestore error:', err);
-  //       setError('S’u lexuan ushqimet.');
-  //       setLoading(false);
-  //     }
-  //   );
-
-  //   return () => unsub();
-  // }, []);
-// READ – leximi i ushqimeve për planin "humb"
+ 
 useEffect(() => {
   setLoading(true);
 
@@ -322,6 +294,7 @@ useEffect(() => {
   );
 }
 
+
 const s = StyleSheet.create({
   container: {
     flex: 1,
@@ -329,13 +302,13 @@ const s = StyleSheet.create({
     padding: 16,
   },
   header: {
-    fontSize: 20,
+    fontSize: 28,              // ishte 20
     fontWeight: '700',
     color: COLORS.green,
     marginBottom: 8,
   },
   subHeader: {
-    fontSize: 16,
+    fontSize: 22,              // ishte 16
     fontWeight: '700',
     marginBottom: 8,
     color: COLORS.textDark,
@@ -353,23 +326,23 @@ const s = StyleSheet.create({
     marginBottom: 8,
   },
   mealSection: {
-    fontSize: 12,
+    fontSize: 16,              // ishte 12
     fontWeight: '700',
     color: COLORS.green,
     marginBottom: 2,
   },
   mealTitle: {
-    fontSize: 14,
+    fontSize: 18,              // ishte 14
     fontWeight: '700',
     color: COLORS.textDark,
   },
   mealSubtitle: {
-    fontSize: 12,
+    fontSize: 16,              // ishte 12
     color: '#555',
   },
   mealKcal: {
     marginTop: 4,
-    fontSize: 12,
+    fontSize: 16,              // ishte 12
     fontWeight: '700',
     color: COLORS.green,
   },
@@ -385,7 +358,7 @@ const s = StyleSheet.create({
   },
   smallBtnText: {
     color: '#fff',
-    fontSize: 12,
+    fontSize: 16,              // ishte 12
     fontWeight: '700',
   },
   sectionRow: {
@@ -404,7 +377,7 @@ const s = StyleSheet.create({
     backgroundColor: COLORS.green,
   },
   sectionChipText: {
-    fontSize: 13,
+    fontSize: 16,              // ishte 13
     color: COLORS.textDark,
   },
   sectionChipTextActive: {
@@ -419,7 +392,7 @@ const s = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#D0C8AA',
     marginBottom: 8,
-    fontSize: 14,
+    fontSize: 16,              // ishte 14
   },
   saveBtn: {
     backgroundColor: COLORS.green,
@@ -431,15 +404,16 @@ const s = StyleSheet.create({
   saveBtnText: {
     color: '#fff',
     fontWeight: '800',
+    fontSize: 16,              // shtuar që me qenë konsistente
   },
   error: {
     color: '#C0392B',
-    fontSize: 13,
+    fontSize: 16,              // ishte 13
     marginBottom: 4,
   },
   success: {
     color: '#1E8449',
-    fontSize: 13,
+    fontSize: 16,              // ishte 13
     marginBottom: 4,
   },
 });

@@ -8,13 +8,8 @@ export default function AuthLayout() {
       headerStyle: { backgroundColor: '#355E3B' },
       headerTintColor: 'white',
       contentStyle: { backgroundColor: '#F9F6E8' },
-
-      
     }}/>
-    
   );
-
-
 }
 
 

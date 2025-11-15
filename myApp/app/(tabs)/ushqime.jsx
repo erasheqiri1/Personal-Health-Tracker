@@ -1,145 +1,258 @@
 
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+// import React from 'react';
+// import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+// import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { FontAwesome5 } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+// import { FontAwesome5 } from '@expo/vector-icons';
+// import { useRouter } from 'expo-router';
+
+// const COLORS = {
+//   green: '#355E3B',
+//   page: '#F7F4E9',
+//   card: '#E6DFC5',
+//   textDark: '#2E2E2E',
+//   cardSoft: '#EFE8CF',
+// };
+
+// export default function UshqimeScreen() {
+//   const router = useRouter();
+
+//   return (
+//     <SafeAreaView style={styles.safe}>
+//       <View style={styles.container}>
+//         <Text style={styles.subtitle}>Zgjidh një opsion</Text>
+
+       
+//         <View style={styles.grid}>
+//           <FoodCard
+//             icon="drumstick-bite"
+//             title="Shto Peshë"
+//             sub="Kalori + proteina më të larta"
+//             onPress={() => router.push('/plans/shto_pesh')} 
+//           />
+//           <FoodCard
+//             icon="leaf" 
+//             title="Humb Peshë"
+//             sub="Deficit kalorie, volum ushqimi"
+//             onPress={() => router.push('/plans/humb_pesh')}
+//           />
+//           <FoodCard
+//             icon="balance-scale"
+//             title="Mbaj Peshën"
+//             sub="Balanco kalori & makro"
+//             onPress={() => router.push('/plans/mbaj_pesh')}
+//             fullRow   
+//           />
+//         </View>
+//       </View>
+//       <View style={{ height: 80 }} />
+//     </SafeAreaView>
+//   );
+// }
+
+// function FoodCard({
+//   icon,
+//   title,
+//   sub,
+//   onPress,
+//   fullRow,
+// }: {
+//   icon: React.ComponentProps<typeof FontAwesome5>['name'];
+//   title: string;
+//   sub: string;
+//   onPress: () => void;
+//   fullRow?: boolean;
+// }) {
+//   return (
+//     <TouchableOpacity
+//       activeOpacity={0.9}
+//       style={[styles.card, fullRow ? styles.cardFull : undefined]}
+//       onPress={onPress}
+//     >
+//       <View style={styles.iconWrap}>
+//         <FontAwesome5 name={icon} size={28} color={COLORS.green} />
+//       </View>
+//       <Text style={styles.cardTitle}>{title}</Text>
+//       <Text style={styles.cardSub}>{sub}</Text>
+//     </TouchableOpacity>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   safe: { flex: 1, backgroundColor: COLORS.page },
+//   container: { flex: 1, paddingHorizontal: 18, paddingTop: 16 },
+//   subtitle: {
+//     textAlign: 'center',
+//     color: COLORS.textDark,
+//     fontSize: 16,
+//     fontWeight: '600',
+//     marginTop: 4,
+//     marginBottom: 16,
+//   },
+
+
+//   grid: {
+//     flex: 1,
+//     flexDirection: 'row',
+//     flexWrap: 'wrap',
+//     justifyContent: 'space-around',
+//     alignContent: 'space-between',
+//   },
+
+
+//   card: {
+//     backgroundColor: COLORS.card,
+//     width: '48%',      
+//     height: '47%',        
+//     borderRadius: 18,
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     shadowColor: '#000',
+//     shadowOpacity: 0.08,
+//     shadowRadius: 6,
+//     shadowOffset: { width: 0, height: 3 },
+//     elevation: 2,
+//   },
+//   cardFull: {
+//     width: '48%',
+//   },
+//   cardSub: {
+//     fontSize: 14,
+//     color: COLORS.textDark,
+//     opacity: 0.8,
+//     textAlign: 'center',
+//     marginTop: 4,
+//   },
+
+//   iconWrap: {
+//     width: 56,
+//     height: 56,
+//     borderRadius: 16,
+//     backgroundColor: COLORS.cardSoft,
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     marginBottom: 10,
+//   },
+//   cardTitle: {
+//     color: COLORS.green,
+//     fontSize: 18,
+//     fontWeight: '800',
+//     textAlign: 'center',
+//     marginBottom: 4,
+//   },
+
+// });
+
+// p.sh. app/(tabs)/ushqime.jsx
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import React from "react";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+import OptionCard from "../../components/OptionCard"; // RREGULLO PATH NËSE DUHET
 
 const COLORS = {
-  green: '#355E3B',
-  page: '#F7F4E9',
-  card: '#E6DFC5',
-  textDark: '#2E2E2E',
-  cardSoft: '#EFE8CF',
+  green: "#355E3B",
+  page: "#F7F4E9",
+  textDark: "#2E2E2E",
 };
 
 export default function UshqimeScreen() {
   const router = useRouter();
+  const { width: W, height: H } = Dimensions.get("window");
+
+  const BG_ICONS = [
+    { name: "food-apple", x: 0.18, y: 0.15, sizeMul: 0.18, op: 0.08, rot: -8 },
+    { name: "food-drumstick", x: 0.8, y: 0.18, sizeMul: 0.2, op: 0.08, rot: 6 },
+    { name: "carrot", x: 0.3, y: 0.38, sizeMul: 0.18, op: 0.07, rot: 5 },
+    { name: "leaf", x: 0.7, y: 0.35, sizeMul: 0.18, op: 0.07, rot: -5 },
+  ];
 
   return (
     <SafeAreaView style={styles.safe}>
-      <View style={styles.container}>
-        <Text style={styles.subtitle}>Zgjidh një opsion</Text>
+      <View style={styles.bgLayer} pointerEvents="none">
+        {BG_ICONS.map((icon, i) => {
+          const size = Math.round(Math.min(W, H) * icon.sizeMul);
+          const left = icon.x * W - size / 2;
+          const top = icon.y * H - size / 2;
+          return (
+            <MaterialCommunityIcons
+              key={i}
+              name={icon.name}
+              size={size}
+              color={COLORS.green}
+              style={{
+                position: "absolute",
+                left,
+                top,
+                opacity: icon.op,
+                transform: [{ rotate: `${icon.rot}deg` }],
+              }}
+            />
+          );
+        })}
+      </View>
 
-       
-        <View style={styles.grid}>
-          <FoodCard
-            icon="drumstick-bite"
+      <View style={styles.container}>
+        <Text style={styles.topTitle}>Zgjidh një opsion</Text>
+
+        {/* dy karta sipër */}
+        <View style={styles.cardsRow}>
+          <OptionCard
+            iconName="food-variant"
             title="Shto Peshë"
-            sub="Kalori + proteina më të larta"
-            onPress={() => router.push('/plans/shto_pesh')} 
+            subtitle="Kalori + proteina më të larta"
+            onPress={() => router.push("/plans/shto_pesh")}
+            style={{ width: "46%", aspectRatio: 0.62 }}
           />
-          <FoodCard
-            icon="leaf" 
+
+          <OptionCard
+            iconName="leaf"
             title="Humb Peshë"
-            sub="Deficit kalorie, volum ushqimi"
-            onPress={() => router.push('/plans/humb_pesh')}
-          />
-          <FoodCard
-            icon="balance-scale"
-            title="Mbaj Peshën"
-            sub="Balanco kalori & makro"
-            onPress={() => router.push('/plans/mbaj_pesh')}
-            fullRow   
+            subtitle="Deficit kalorie, volum ushqimi"
+            onPress={() => router.push("/plans/humb_pesh")}
+            style={{ width: "46%", aspectRatio: 0.62 }}
           />
         </View>
-      </View>
-      <View style={{ height: 80 }} />
-    </SafeAreaView>
-  );
-}
 
-function FoodCard({
-  icon,
-  title,
-  sub,
-  onPress,
-  fullRow,
-}: {
-  icon: React.ComponentProps<typeof FontAwesome5>['name'];
-  title: string;
-  sub: string;
-  onPress: () => void;
-  fullRow?: boolean;
-}) {
-  return (
-    <TouchableOpacity
-      activeOpacity={0.9}
-      style={[styles.card, fullRow ? styles.cardFull : undefined]}
-      onPress={onPress}
-    >
-      <View style={styles.iconWrap}>
-        <FontAwesome5 name={icon} size={28} color={COLORS.green} />
+        {/* karta e tretë poshtë, në mes */}
+        <View style={styles.singleCardRow}>
+          <OptionCard
+            iconName="scale-balance"
+            title="Mbaj Peshën"
+            subtitle="Balanco kalori & makro"
+            onPress={() => router.push("/plans/mbaj_pesh")}
+            style={{ width: "46%", aspectRatio: 0.62 }}
+          />
+        </View>
+
+        <View style={{ height: 28 }} />
       </View>
-      <Text style={styles.cardTitle}>{title}</Text>
-      <Text style={styles.cardSub}>{sub}</Text>
-    </TouchableOpacity>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: COLORS.page },
-  container: { flex: 1, paddingHorizontal: 18, paddingTop: 16 },
-  subtitle: {
-    textAlign: 'center',
-    color: COLORS.textDark,
+  bgLayer: { ...StyleSheet.absoluteFillObject, zIndex: -1 },
+  container: { flex: 1, justifyContent: "center", paddingHorizontal: 16 },
+
+  topTitle: {
+    textAlign: "center",
     fontSize: 16,
-    fontWeight: '600',
-    marginTop: 4,
-    marginBottom: 16,
-  },
-
-
-  grid: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    alignContent: 'space-between',
-  },
-
-
-  card: {
-    backgroundColor: COLORS.card,
-    width: '48%',      
-    height: '47%',        
-    borderRadius: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 2,
-  },
-  cardFull: {
-    width: '48%',
-  },
-  cardSub: {
-    fontSize: 14,
+    fontWeight: "700",
     color: COLORS.textDark,
-    opacity: 0.8,
-    textAlign: 'center',
-    marginTop: 4,
+    marginBottom: 22,
   },
 
-  iconWrap: {
-    width: 56,
-    height: 56,
-    borderRadius: 16,
-    backgroundColor: COLORS.cardSoft,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 10,
+  cardsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 10,
   },
-  cardTitle: {
-    color: COLORS.green,
-    fontSize: 18,
-    fontWeight: '800',
-    textAlign: 'center',
-    marginBottom: 4,
+  singleCardRow: {
+    marginTop: 18,
+    alignItems: "center",
   },
-
 });
-

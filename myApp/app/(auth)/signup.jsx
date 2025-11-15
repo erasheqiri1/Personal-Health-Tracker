@@ -24,9 +24,7 @@ const COLORS = {
   border: '#D7D2B8',
 };
 
-// ============================
-//  Komponent i thjeshtë Dropdown
-// ============================
+
 function Dropdown({ placeholder, value, onChange, options, style }) {
   const [open, setOpen] = useState(false);
 
@@ -93,8 +91,7 @@ export default function Signup() {
 
   const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
-  // opsionet
-  const genderOptions = [
+ const genderOptions = [
     { label: 'Mashkull', value: 'male' },
     { label: 'Femër', value: 'female' },
   ];
@@ -106,7 +103,6 @@ export default function Signup() {
     (h) => ({ label: `${h} cm`, value: String(h) })
   );
 
-  // mbushi fushat kur vjen nga Google
   useEffect(() => {
     if (params.mode === 'social') {
       setFromSocial(true);
@@ -229,7 +225,6 @@ export default function Signup() {
       >
         <Stack.Screen options={{ headerShown: false }} />
 
-        {/* LOGO + BRAND */}
         <View style={s.brand}>
           <View style={s.runCircle}>
             <FontAwesome5 name="running" size={56} color="#FFFFFF" />
@@ -270,7 +265,6 @@ export default function Signup() {
           />
         )}
 
-        {/* Gjinia */}
         <Dropdown
           placeholder="Gjinia"
           value={gender}
@@ -279,7 +273,6 @@ export default function Signup() {
           style={{ marginBottom: 12 }}
         />
 
-        {/* Pesha & Gjatësia */}
         <View style={s.row}>
           <Dropdown
             placeholder="Pesha (kg)"
@@ -387,7 +380,6 @@ const s = StyleSheet.create({
     flex: 1,
   },
 
-  // dropdown styles
   dropInput: {
     justifyContent: 'space-between',
   },

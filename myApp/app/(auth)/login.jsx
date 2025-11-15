@@ -35,7 +35,6 @@ const COLORS = {
   textDark: '#1F3D26',
 };
 
-// ⬇️ EMAILI I ADMINIT – NDRROJE NËSE E KE @gmail.com
 const ADMIN_EMAIL = 'test1@gmail.com';
 
 export default function Login() {
@@ -45,24 +44,20 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // helper i vogël për redirect pas login
   const redirectAfterLogin = (user) => {
     const userEmail = (user?.email || '').toLowerCase();
     const adminEmail = ADMIN_EMAIL.toLowerCase();
 
     if (userEmail === adminEmail) {
-      // nëse është admin → admin panel
+    //kur eshte admin
       router.replace('/admin/dashboard');
     } else {
-      // tjerët → tabs/dashboard
+      // kur eshte user normal
       router.replace('/(tabs)/dashboard');
     }
   };
 
-  // ------------------------------------------------
-  //  EMAIL / PASSWORD LOGIN
-  // ------------------------------------------------
-  const handleEmailLogin = async () => {
+    const handleEmailLogin = async () => {
     setError('');
 
     if (!email || !password) {
@@ -100,9 +95,8 @@ export default function Login() {
     }
   };
 
-  // ------------------------------------------------
-  //  SOCIAL LOGIN + profileCompleted
-  // ------------------------------------------------
+  
+  //profileCompleted
   const socialLoginWithProfileCheck = async (provider, providerName) => {
     setError('');
 
@@ -118,8 +112,6 @@ export default function Login() {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-
-      // shiko dokumentin /users/{uid}
       const userRef = doc(db, 'users', user.uid);
       const snap = await getDoc(userRef);
 
@@ -138,7 +130,7 @@ export default function Login() {
           },
         });
       } else {
-        // nëse ekziston dhe është i plotësuar → direkt në app
+        // nese ekziston dhe eshte i plotësuar → direkt në app
         redirectAfterLogin(user);
       }
     } catch (e) {
@@ -168,9 +160,7 @@ export default function Login() {
   const handleFacebookLogin = () =>
     socialLoginWithProfileCheck(new FacebookAuthProvider(), 'Facebook');
 
-  // ------------------------------------------------
-  //  RENDER
-  // ------------------------------------------------
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.bg }}>
       <Stack.Screen options={{ headerShown: false }} />
@@ -180,15 +170,14 @@ export default function Login() {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <View style={s.container}>
-          {/* LOGO + TITULLI */}
-          <View style={s.logoWrap}>
+            <View style={s.logoWrap}>
             <RunIcon />
             <Text style={s.appTitle}>
               PERSONAL{'\n'}HEALTH{'\n'}TRACKER
             </Text>
           </View>
 
-          {/* FORMA */}
+     
           <View style={s.form}>
             <TextInput
               placeholder="Email"

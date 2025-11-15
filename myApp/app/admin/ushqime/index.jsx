@@ -1,51 +1,79 @@
-// // app/admin/index.jsx
-// import { Stack, router } from 'expo-router';
-// import React from 'react';
-// import { Pressable, StyleSheet, Text, View } from 'react-native';
+
+// import { Feather, FontAwesome5 } from "@expo/vector-icons";
+// import { Stack, router } from "expo-router";
+// import React from "react";
+// import { Pressable, StyleSheet, Text, View } from "react-native";
 
 // const COLORS = {
-//   green: '#355E3B',
-//   bg: '#F7F4E9',
-//   card: '#E6DFC5',
-//   textDark: '#2E2E2E',
+//   green: "#355E3B",
+//   bg: "#F7F4E9",
+//   card: "#E6DFC5",
+//   textDark: "#2E2E2E",
 // };
 
 // export default function AdminHome() {
 //   return (
 //     <View style={s.container}>
-//       <Stack.Screen options={{ title: 'Admin – Plane ushqimi' }} />
+
+//       <Stack.Screen
+//         options={{
+//           title: "Admin – Plane ushqimi",
+//           headerStyle: { backgroundColor: COLORS.green },
+//           headerTintColor: "#fff",
+//           headerTitleStyle: { fontWeight: "bold" },
+//         }}
+//       />
 
 //       <Text style={s.title}>Zgjidh planin për ta menaxhuar:</Text>
 
-//       <Pressable
-//         style={s.card}
-//         onPress={() => router.push('/admin/shto_pesh')}
-//       >
-//         <Text style={s.cardTitle}>Shto Peshë</Text>
-//         <Text style={s.cardSubtitle}>
-//           CRUD për ushqimet e planit Shto Peshë
-//         </Text>
+//       {/* ---- Shto Peshë ---- */}
+//       <Pressable style={s.card} onPress={() => router.push("/admin/ushqime/shto_pesh")}>
+//         <View style={s.row}>
+//           <View style={s.iconCircle}>
+//             <FontAwesome5 name="weight" size={28} color={COLORS.green} />
+//           </View>
+
+//           <View style={s.textBlock}>
+//             <Text style={s.cardTitle}>Shto Peshë</Text>
+//             <Text style={s.cardSubtitle}>Menaxho ushqimet e planit Shto Peshë.</Text>
+//           </View>
+//         </View>
+
+//         <Feather name="chevron-right" size={26} color={COLORS.textDark} />
 //       </Pressable>
 
-//       <Pressable
-//         style={s.card}
-//         onPress={() => router.push('/admin/humb_pesh')}
-//       >
-//         <Text style={s.cardTitle}>Humb Peshë</Text>
-//         <Text style={s.cardSubtitle}>
-//           CRUD për ushqimet e planit Humb Peshë
-//         </Text>
+//       {/* ---- Humb Peshë ---- */}
+//       <Pressable style={s.card} onPress={() => router.push("/admin/ushqime/humb_pesh")}>
+//         <View style={s.row}>
+//           <View style={s.iconCircle}>
+//             <FontAwesome5 name="running" size={28} color={COLORS.green} />
+//           </View>
+
+//           <View style={s.textBlock}>
+//             <Text style={s.cardTitle}>Humb Peshë</Text>
+//             <Text style={s.cardSubtitle}>Menaxho ushqimet e planit Humb Peshë.</Text>
+//           </View>
+//         </View>
+
+//         <Feather name="chevron-right" size={26} color={COLORS.textDark} />
 //       </Pressable>
 
-//       <Pressable
-//         style={s.card}
-//         onPress={() => router.push('/admin/mbaj_pesh')}
-//       >
-//         <Text style={s.cardTitle}>Mbaj Peshën</Text>
-//         <Text style={s.cardSubtitle}>
-//           CRUD për ushqimet e planit Mbaj Peshën
-//         </Text>
+//       {/* ---- Mbaj Peshë ---- */}
+//       <Pressable style={s.card} onPress={() => router.push("/admin/ushqime/mbaj_pesh")}>
+//         <View style={s.row}>
+//           <View style={s.iconCircle}>
+//             <FontAwesome5 name="heartbeat" size={28} color={COLORS.green} />
+//           </View>
+
+//           <View style={s.textBlock}>
+//             <Text style={s.cardTitle}>Mbaj Peshën</Text>
+//             <Text style={s.cardSubtitle}>Menaxho ushqimet e planit Mbaj Peshën.</Text>
+//           </View>
+//         </View>
+
+//         <Feather name="chevron-right" size={26} color={COLORS.textDark} />
 //       </Pressable>
+
 //     </View>
 //   );
 // }
@@ -56,109 +84,112 @@
 //     backgroundColor: COLORS.bg,
 //     padding: 16,
 //   },
+
 //   title: {
-//     fontSize: 20,
-//     fontWeight: '700',
-//     marginBottom: 16,
+//     fontSize: 28,
+//     fontWeight: "800",
+//     marginBottom: 12,
 //     color: COLORS.green,
 //   },
+
 //   card: {
 //     backgroundColor: COLORS.card,
-//     borderRadius: 12,
-//     padding: 16,
-//     marginBottom: 12,
+//     borderRadius: 24,
+//     paddingVertical: 32,
+//     paddingHorizontal: 22,
+//     minHeight: 140,
+//     width: "100%",
+//     marginBottom: 14,
+
+//     flexDirection: "row",
+//     alignItems: "center",
+//     justifyContent: "space-between",
+
+//     shadowColor: "#000",
+//     shadowOpacity: 0.15,
+//     shadowOffset: { width: 0, height: 3 },
+//     shadowRadius: 6,
+//     elevation: 5,
 //   },
+
+//   row: {
+//     flexDirection: "row",
+//     alignItems: "center",
+//     gap: 16,
+//     flex: 1,
+//   },
+
+//   iconCircle: {
+//     width: 60,
+//     height: 60,
+//     backgroundColor: "#F7F4E9",
+//     borderRadius: 30,
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+
+//   textBlock: {
+//     flex: 1,
+//   },
+
 //   cardTitle: {
-//     fontSize: 18,
-//     fontWeight: '700',
+//     fontSize: 22,
+//     fontWeight: "900",
 //     marginBottom: 4,
 //     color: COLORS.textDark,
 //   },
+
 //   cardSubtitle: {
-//     fontSize: 14,
-//     color: '#555',
+//     fontSize: 16,
+//     color: "#444",
+//     lineHeight: 22,
 //   },
 // });
-// app/admin/index.jsx
-// app/admin/index.jsx
-// app/admin/index.jsx
-import { Stack, router } from 'expo-router';
-import { signOut } from 'firebase/auth';
-import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { auth } from '../../../firebaseConfig';
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Stack, router } from "expo-router";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import AdminOptionCard from "../../../components/AdminOptionCard";
 
 const COLORS = {
-  green: '#355E3B',
-  bg: '#F7F4E9',
-  card: '#E6DFC5',
-  textDark: '#2E2E2E',
+  green: "#355E3B",
+  bg: "#F7F4E9",
 };
 
-export default function AdminHome() {
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      router.replace('/login');
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
+export default function AdminUshqime() {
   return (
     <View style={s.container}>
-
       <Stack.Screen
         options={{
-          title: 'Admin – Plane ushqimi',
+          title: "Admin – Plane ushqimi",
           headerStyle: { backgroundColor: COLORS.green },
-          headerTintColor: '#fff',
-          headerTitleStyle: { fontWeight: 'bold' },
+          headerTintColor: "#fff",
+          headerTitleStyle: { fontWeight: "bold" },
         }}
       />
 
       <Text style={s.title}>Zgjidh planin për ta menaxhuar:</Text>
 
-      <Pressable
-        style={s.card}
-        onPress={() => router.push('/admin/ushqime/shto_pesh')}
-      >
-        <Text style={s.cardTitle}>Shto Peshë</Text>
-        <Text style={s.cardSubtitle}>CRUD për ushqimet e planit Shto Peshë</Text>
-      </Pressable>
+      <AdminOptionCard
+        icon={<FontAwesome5 name="weight" size={28} color={COLORS.green} />}
+        title="Shto Peshë"
+        subtitle="Menaxho ushqimet e planit Shto Peshë."
+        onPress={() => router.push("/admin/ushqime/shto_pesh")}
+      />
 
-      <Pressable
-        style={s.card}
-        onPress={() => router.push('/admin/ushqime/humb_pesh')}
-      >
-        <Text style={s.cardTitle}>Humb Peshë</Text>
-        <Text style={s.cardSubtitle}>CRUD për ushqimet e planit Humb Peshë</Text>
-      </Pressable>
+      <AdminOptionCard
+        icon={<FontAwesome5 name="running" size={28} color={COLORS.green} />}
+        title="Humb Peshë"
+        subtitle="Menaxho ushqimet e planit Humb Peshë."
+        onPress={() => router.push("/admin/ushqime/humb_pesh")}
+      />
 
-      <Pressable
-        style={s.card}
-        onPress={() => router.push('/admin/ushqime/mbaj_pesh')}
-      >
-        <Text style={s.cardTitle}>Mbaj Peshën</Text>
-        <Text style={s.cardSubtitle}>CRUD për ushqimet e planit Mbaj Peshën</Text>
-      </Pressable>
-
-   {/* BUTONI POSHT – Dil nga llogaria */}
-<Pressable
-  style={s.logoutBtn}
-  onPress={async () => {
-    try {
-      await signOut(auth);       // del prej Firebase
-      router.replace('/(auth)/login');  // direkt te login
-    } catch (e) {
-      console.log('Logout error:', e);
-    }
-  }}
->
-  <Text style={s.logoutText}>Dil nga llogaria</Text>
-</Pressable>
-
+      <AdminOptionCard
+        icon={<FontAwesome5 name="heartbeat" size={28} color={COLORS.green} />}
+        title="Mbaj Peshën"
+        subtitle="Menaxho ushqimet e planit Mbaj Peshën."
+        onPress={() => router.push("/admin/ushqime/mbaj_pesh")}
+      />
     </View>
   );
 }
@@ -170,38 +201,9 @@ const s = StyleSheet.create({
     padding: 16,
   },
   title: {
-    fontSize: 20,
-    fontWeight: '700',
-    marginBottom: 16,
-    color: COLORS.green,
-  },
-  card: {
-    backgroundColor: COLORS.card,
-    borderRadius: 12,
-    padding: 16,
+    fontSize: 28,
+    fontWeight: "800",
     marginBottom: 12,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 4,
-    color: COLORS.textDark,
-  },
-  cardSubtitle: {
-    fontSize: 14,
-    color: '#555',
-  },
-
-  logoutBtn: {
-    marginTop: 40,
-    backgroundColor: COLORS.green,
-    paddingVertical: 14,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  logoutText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '700',
+    color: COLORS.green,
   },
 });
