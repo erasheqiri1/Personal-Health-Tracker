@@ -21,11 +21,14 @@
   <img src="myApp/assets/foto6.PNG" width="100" height="210"/>
   <img src="myApp/assets/foto7.PNG" width="100" height="210"/>
   <img src="myApp/assets/foto8.PNG" width="100" height="210"/>
+</p>
+<p align="center">
   <img src="myApp/assets/foto9.PNG" width="100" height="210"/>
   <img src="myApp/assets/foto10.PNG" width="100" height="210"/>
   <img src="myApp/assets/foto11.PNG" width="100" height="210"/>
+    <img src="myApp/assets/foto12.PNG" width="100" height="210"/>
+    <img src="myApp/assets/foto13.PNG" width="100" height="210"/>
 </p>
-
 ----------------------------------------------------------------------------------------------------------
 
 ## ⭐ Features
