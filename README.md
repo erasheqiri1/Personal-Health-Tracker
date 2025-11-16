@@ -94,3 +94,16 @@
 | State | React Hooks |
 
 ---
+
+
+## 📥 Install & Run
+
+```bash
+git clone <repo-url>
+cd myApp
+npm install
+npx expo start
+```
+
+Hapeni me:
+- **Web (Browser)**
