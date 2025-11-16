@@ -57,4 +57,18 @@
 - Regjistrim i ushtrimeve ditore  
 - Kalori të djegura  
 - Plane ushtrimesh sipas qëllimit  
-- Timer për ushtrimet 
+- Timer për ushtrimet
+
+- 
+### 😴 Sleep Monitoring
+- Orët e gjumit  
+- Kualiteti i gjumit  
+- Analiza javore + rekomandime  
+
+---
+
+### 🍳 Recipes API Integration
+- TheMealDB  
+- OpenWeatherMap (rekomandime sipas motit)  
+- Filtrim sipas dietës: vegan, keto, high-protein, low-carb  
+- Lista e preferencave (favorites)  
