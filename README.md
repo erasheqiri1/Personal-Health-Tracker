@@ -13,8 +13,6 @@
   <img src="myApp/assets/foto3.PNG" width="220" height="400"/>
   <img src="myApp/assets/foto4.PNG" width="220" height="400"/>
 </p>
-
-
 ### User View
 <p align="center">
   <img src="myApp/assets/foto5.PNG" width="220" height="400"/>
@@ -35,7 +33,6 @@
 ### 🔐 Authentication & User Security
 - Firebase Email/Password  
 - Social Logins (Web): Google, Microsoft, GitHub, Facebook  
-- Password Reset + Email Verification  
 - Session Persistence (përdoruesi mbetet i kyçur edhe pas restart)  
 
 ---
@@ -57,22 +54,16 @@
 - Regjistrim i ushtrimeve ditore  
 - Kalori të djegura  
 - Plane ushtrimesh sipas qëllimit  
-- Timer për ushtrimet
 
 - 
 ### 😴 Sleep Monitoring
 - Orët e gjumit  
 - Kualiteti i gjumit  
-- Analiza javore + rekomandime  
-
 ---
 
 ### 🍳 Recipes API Integration
 - TheMealDB  
-- OpenWeatherMap (rekomandime sipas motit)  
-- Filtrim sipas dietës: vegan, keto, high-protein, low-carb  
-- Lista e preferencave (favorites)
-
+- OpenWeatherMap (+rekomandime sipas motit)  
   
 ### 🧭 Navigation (expo-router)
 - Layout i pastër  
@@ -102,7 +93,7 @@
 git clone <repo-url>
 cd myApp
 npm install
-npx expo start
+npm run web
 ```
 
 Hapeni me:
