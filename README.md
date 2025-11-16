@@ -43,5 +43,13 @@
 ### 🧠 State Management & Logic
 - `useState`, `useEffect`, `useRouter`  
 - Handling errors, loading, async operations  
-- Data sync me Firebase Firestore  
+- Data sync me Firebase Firestore
 
+  ---
+### 🥗 Food Tracking
+- Regjistrim i vakteve ditore  
+- Llogaritje automatike e kalorive  
+- Shfaqje nutriente: protein, carbs, fats  
+- Skanim i barkodit ushqimor *(opsionale në të ardhmen)*  
+
+---
