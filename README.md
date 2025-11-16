@@ -71,4 +71,26 @@
 - TheMealDB  
 - OpenWeatherMap (rekomandime sipas motit)  
 - Filtrim sipas dietës: vegan, keto, high-protein, low-carb  
-- Lista e preferencave (favorites)  
+- Lista e preferencave (favorites)
+
+  
+### 🧭 Navigation (expo-router)
+- Layout i pastër  
+- Navigim i thjeshtë për çdo moshë  
+- Bottom Tabs + Stack Navigation  
+
+---
+
+## 🏗️ Tech Stack
+
+| Shtresa | Teknologjia |
+|--------|-------------|
+| Frontend | React Native (Expo) |
+| Routing | expo-router |
+| Backend | Firebase Firestore |
+| Auth | Firebase Authentication |
+| Hosting (Web) | Firebase Hosting |
+| API External | TheMealDB, OpenWeatherMap |
+| State | React Hooks |
+
+---
