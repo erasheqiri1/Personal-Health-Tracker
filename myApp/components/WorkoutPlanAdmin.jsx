@@ -294,7 +294,7 @@ export default function WorkoutPlanAdmin({ planKey, headerText }) {
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TextInput
           style={[s.input, { flex: 1 }]}
-          placeholder="Ikona (p.sh. arm-flex)"
+          placeholder="Ikona"
           value={icon}
           onChangeText={setIcon}
         />
