@@ -1,4 +1,4 @@
-// components/OptionCard.jsx
+// perdorim te ushtrime edhe ushqime
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";

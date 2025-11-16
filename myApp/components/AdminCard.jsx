@@ -1,4 +1,4 @@
-// components/AdminCard.jsx
+// eshte perdor te admin/dashboard.jsx
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
