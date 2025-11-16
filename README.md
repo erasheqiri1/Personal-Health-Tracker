@@ -7,7 +7,17 @@
 ## Screenshots
 
 ### Admin View
-<img src="my-app/assets/foto1.png" width ="410}"/>
-<img src="my-app/assets/foto1.png" width ="410}"/>
-<img src="my-app/assets/foto1.png" width ="410}"/>
-<img src="my-app/assets/foto1.png" width ="410}"/>
+<p align="center">
+<img src="myApp/assets/foto1.PNG" width ="200}"/>
+<img src="myApp/assets/foto2.PNG" width ="200}"/>
+<img src="myApp/assets/foto3.PNG" width ="200}"/>
+<img src="myApp/assets/foto4.PNG" width ="200}"/>
+</p>
+
+### User View
+<p align="center">
+<img src="myApp/assets/foto1.PNG" width ="200}"/>
+<img src="myApp/assets/foto2.PNG" width ="200}"/>
+<img src="myApp/assets/foto3.PNG" width ="200}"/>
+<img src="myApp/assets/foto4.PNG" width ="200}"/>
+</p>
