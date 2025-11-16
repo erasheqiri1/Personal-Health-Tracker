@@ -89,7 +89,8 @@ export default function Signup() {
   const [loading,   setLoading]   = useState(false);
   const [error,     setError]     = useState('');
 
-  const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
+
 
  const genderOptions = [
     { label: 'Mashkull', value: 'male' },
