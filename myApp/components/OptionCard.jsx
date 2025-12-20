@@ -1,6 +1,6 @@
-// perdorim te ushtrime edhe ushqime
+// // perdorim te ushtrime edhe ushqime
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import React from "react";
+import React, { memo } from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 const COLORS = {
@@ -9,7 +9,7 @@ const COLORS = {
   textDark: "#2E2E2E",
 };
 
-export default function OptionCard({
+function OptionCard({
   iconName,
   title,
   subtitle,
@@ -38,6 +38,10 @@ export default function OptionCard({
   );
 }
 
+// 🔥 OPTIMIZIM PERFORMANCE
+// Komponent statik → nuk re-renderon pa ndryshim props
+export default memo(OptionCard);
+
 const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.cardSoft,
@@ -55,7 +59,7 @@ const styles = StyleSheet.create({
     color: COLORS.textDark,
     textAlign: "center",
     fontWeight: "900",
-    fontSize: 18,     
+    fontSize: 18,
     marginTop: 10,
     lineHeight: 22,
     letterSpacing: 0.4,
