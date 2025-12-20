@@ -1,4 +1,4 @@
-# 📱Personal Health Tracker App
+# Personal Health Tracker App
 - Personal Health Tracker është një aplikacion mobil i ndërtuar për t’i ndihmuar përdoruesit të kujdesen për shëndetin e tyre ditor. Aplikacioni kombinon ushqimin, ushtrimet, gjumin, dhe recetat ushqimore në një vend të vetëm, duke krijuar një përvojë të thjeshtë dhe praktike për menaxhimin e stilit të jetesës.
 - Përdoruesi krijon llogarinë e tij dhe aplikacioni i personalizohet automatikisht: çdo ditë ai mund të regjistrojë çfarë ka ngrënë, çfarë ushtrimesh ka bërë, sa ka fjetur, sa hapa ka bërë, dhe t’i shohë statistikat menjëherë në dashboard.
 - Aplikacioni ofron edhe plane ushqimore dhe ushtrimesh të ndara sipas qëllimit personal (humbje peshe, shtim peshe, ruajtje peshe), si dhe sjell receta të gatshme nga API të jashtme, duke e bërë planifikimin e ditës shumë më të lehtë.
@@ -28,51 +28,51 @@
     <img src="myApp/assets/foto13.PNG" width="190" height="400"/>
 </p>
 
-## ⭐ Features (të zgjeruara)
+##  Features (të zgjeruara)
 
-### 🔐 Authentication & User Security
+###  Authentication & User Security
 - Firebase Email/Password  
 - Social Logins (Web): Google, Microsoft, GitHub, Facebook  
 - Session Persistence (përdoruesi mbetet i kyçur edhe pas restart)  
 
 ---
 
-### 🧠 State Management & Logic
+###  State Management & Logic
 - `useState`, `useEffect`, `useRouter`  
 - Handling errors, loading, async operations  
 - Data sync me Firebase Firestore
 
   ---
-### 🥗 Food Tracking
+###  Food Tracking
 - Regjistrim i vakteve ditore  
 - Llogaritje automatike e kalorive  
 - Shfaqje nutriente: protein, carbs, fats  
 - Skanim i barkodit ushqimor *(opsionale në të ardhmen)*  
 
 ---
-### 💪 Workout Tracking
+###  Workout Tracking
 - Regjistrim i ushtrimeve ditore  
 - Kalori të djegura  
 - Plane ushtrimesh sipas qëllimit  
 
 - 
-### 😴 Sleep Monitoring
+###  Sleep Monitoring
 - Orët e gjumit  
 - Kualiteti i gjumit  
 ---
 
-### 🍳 Recipes API Integration
+###  Recipes API Integration
 - TheMealDB  
 - OpenWeatherMap (+rekomandime sipas motit)  
   
-### 🧭 Navigation (expo-router)
+###  Navigation (expo-router)
 - Layout i pastër  
 - Navigim i thjeshtë për çdo moshë  
 - Bottom Tabs + Stack Navigation  
 
 ---
 
-## � UI/UX Improvements
+##  UI/UX Improvements
 
 ### Layout dhe Dizajn i Pastër
 - **Ngjyra të njëtrajtshme**: Përdorim i konstantave të centralizuara për ngjyrat (COLORS) në të gjithë aplikacionin, duke siguruar konsistencë vizuale.
@@ -101,7 +101,7 @@ Këto përmirësime janë aplikuar në ekrane kryesore si `PlanMealsScreen`, `lo
 ---
 
 
-## 📥 Install & Run
+##  Install & Run
 
 ```bash
 git clone <repo-url>
@@ -114,7 +114,7 @@ Hapeni me:
 - **Web (Browser)**
 
 
-  ## 🧪 Testing
+  ##  Testing
 Për fazën e testimit kemi përdorur Jest dhe React Testing Library.
 - Snapshot Tests: Verifikojnë që UI nuk ndryshon papritur.
 - Interaction Tests: Testimi i shtypjes së butonave (fireEvent).
