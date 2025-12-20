@@ -430,6 +430,7 @@ import {
   Text,
   View,
   FlatList,
+  SectionList,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -443,14 +444,9 @@ import {
   where,
 } from 'firebase/firestore';
 import { auth, db } from '../firebaseConfig';
-
-const COLORS = {
-  green: '#355E3B',
-  bg: '#F7F4E9',
-  card: '#E6DFC5',
-  cardSoft: '#EFE8CF',
-  textDark: '#2E2E2E',
-};
+import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZES, FONT_WEIGHTS } from '../constants';
+import AnimatedButton from './AnimatedButton';
+import Modal from './Modal';
 
 /* =========================
    Memoized row component
@@ -491,9 +487,12 @@ export default function PlanMealsScreen({ planKey, headerTitle, tips = [] }) {
 
   const [totalToday, setTotalToday] = useState(null);
 
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
+
   /* =========================
      READ – Firestore
      ========================= */
+  // READ – leximi i ushqimeve për planin (planKey)
   useEffect(() => {
     setLoading(true);
     const q = query(collection(db, 'meals'), where('plan', '==', planKey));
@@ -531,6 +530,27 @@ export default function PlanMealsScreen({ planKey, headerTitle, tips = [] }) {
     }
     return base;
   }, [meals]);
+
+  /* =========================
+     FlatList data
+     ========================= */
+  const flatListData = useMemo(() => {
+    const data = [];
+    if (tips.length > 0) {
+      data.push({ type: 'tips', tips });
+    }
+    if (loading) {
+      data.push({ type: 'loading' });
+    } else if (error) {
+      data.push({ type: 'error', error });
+    } else {
+      if (grouped.menges.length > 0) data.push({ type: 'section', key: 'menges', label: 'Mëngjesi', meals: grouped.menges });
+      if (grouped.dreka.length > 0) data.push({ type: 'section', key: 'dreka', label: 'Dreka', meals: grouped.dreka });
+      if (grouped.darke.length > 0) data.push({ type: 'section', key: 'darke', label: 'Darkë', meals: grouped.darke });
+    }
+    data.push({ type: 'footer', totalKcal, totalToday });
+    return data;
+  }, [tips, loading, error, grouped, totalKcal, totalToday]);
 
   /* =========================
      Memoized total kcal
@@ -592,7 +612,7 @@ export default function PlanMealsScreen({ planKey, headerTitle, tips = [] }) {
     }));
   }, []);
 
-  const handleSaveForToday = async () => {
+  const handleSaveForToday = useCallback(async () => {
     if (totalKcal === 0) {
       Alert.alert('Vërejtje', 'Zgjidh të paktën një ushqim.');
       return;
@@ -629,39 +649,79 @@ export default function PlanMealsScreen({ planKey, headerTitle, tips = [] }) {
         { merge: true }
       );
 
-      Alert.alert(
-        'Ruajtur',
-        `U shtuan ${totalKcal} kcal për sot.\nTotali i ri: ${newTotal} kcal.`
-      );
+      setSuccessModalVisible(true);
+      setTimeout(() => setSuccessModalVisible(false), 2000);
     } catch (e) {
       Alert.alert('Gabim', 'Nuk u ruajt konsumimi për sot.');
     }
-  };
+  }, [totalKcal, totalToday, planKey]);
 
   /* =========================
-     Section renderer
+     FlatList renderItem
      ========================= */
-  const renderSection = (label, key) => {
-    const list = grouped[key];
-    if (!list?.length) return null;
-
-    return (
-      <View style={s.card}>
-        <Text style={s.cardTitle}>{label}</Text>
-        <FlatList
-          data={list}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <MealRow
-              meal={item}
-              checked={selected[key] === item.id}
-              onPress={() => handleSelect(key, item.id)}
-            />
-          )}
-        />
-      </View>
-    );
-  };
+  const renderItem = useCallback(({ item }) => {
+    switch (item.type) {
+      case 'tips':
+        return (
+          <View style={[s.card, { backgroundColor: COLORS.cardSoft }]}>
+            <Text style={s.cardTitle}>Udhëzime të shpejta</Text>
+            {item.tips.map((t, idx) => (
+              <Text key={idx} style={s.tip}>{t}</Text>
+            ))}
+          </View>
+        );
+      case 'loading':
+        return (
+          <ActivityIndicator size="large" color={COLORS.green} />
+        );
+      case 'error':
+        return (
+          <Text style={s.error}>{item.error}</Text>
+        );
+      case 'section':
+        return (
+          <View style={s.card}>
+            <Text style={s.cardTitle}>{item.label}</Text>
+            {item.meals.map(meal => (
+              <MealRow
+                key={meal.id}
+                meal={meal}
+                checked={selected[item.key] === meal.id}
+                onPress={() => handleSelect(item.key, meal.id)}
+              />
+            ))}
+          </View>
+        );
+      case 'footer':
+        return (
+          <View>
+            <View style={s.totalWrap}>
+              <View>
+                <Text style={s.totalText}>
+                  Zgjedhja aktuale: {item.totalKcal} kcal
+                </Text>
+                {item.totalToday !== null && (
+                  <Text style={s.totalText}>
+                    Totali i ruajtur për sot: {item.totalToday} kcal
+                  </Text>
+                )}
+              </View>
+              <AnimatedButton
+                style={s.saveBtn}
+                onPress={handleSaveForToday}
+              >
+                <Text style={{ color: '#fff', fontWeight: '700' }}>
+                  Ruaj për sot
+                </Text>
+              </AnimatedButton>
+            </View>
+            <View style={{ height: 30 }} />
+          </View>
+        );
+      default:
+        return null;
+    }
+  }, [selected, handleSelect, handleSaveForToday]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.bg }}>
@@ -673,49 +733,21 @@ export default function PlanMealsScreen({ planKey, headerTitle, tips = [] }) {
         <View style={{ width: 44 }} />
       </View>
 
-      <ScrollView contentContainerStyle={s.wrap}>
-        {tips.length > 0 && (
-          <View style={[s.card, { backgroundColor: COLORS.cardSoft }]}>
-            <Text style={s.cardTitle}>Udhëzime të shpejta</Text>
-            {tips.map((t, idx) => (
-              <Text key={idx} style={s.tip}>{t}</Text>
-            ))}
-          </View>
-        )}
+      <FlatList
+        data={flatListData}
+        keyExtractor={(item, index) => `${item.type}-${index}`}
+        renderItem={renderItem}
+        contentContainerStyle={s.wrap}
+      />
 
-        {loading ? (
-          <ActivityIndicator size="large" color={COLORS.green} />
-        ) : error ? (
-          <Text style={s.error}>{error}</Text>
-        ) : (
-          <>
-            {renderSection('Mëngjesi', 'menges')}
-            {renderSection('Dreka', 'dreka')}
-            {renderSection('Darkë', 'darke')}
-          </>
-        )}
-
-        <View style={s.totalWrap}>
-          <View>
-            <Text style={s.totalText}>
-              Zgjedhja aktuale: {totalKcal} kcal
-            </Text>
-            {totalToday !== null && (
-              <Text style={s.totalText}>
-                Totali i ruajtur për sot: {totalToday} kcal
-              </Text>
-            )}
-          </View>
-
-          <Pressable style={s.saveBtn} onPress={handleSaveForToday}>
-            <Text style={{ color: '#fff', fontWeight: '700' }}>
-              Ruaj për sot
-            </Text>
-          </Pressable>
-        </View>
-
-        <View style={{ height: 30 }} />
-      </ScrollView>
+      <Modal visible={successModalVisible} onClose={() => setSuccessModalVisible(false)}>
+        <Text style={{ fontSize: FONT_SIZES.lg, fontWeight: FONT_WEIGHTS.bold, color: COLORS.green, textAlign: 'center' }}>
+          Ruajtur me sukses!
+        </Text>
+        <Text style={{ fontSize: FONT_SIZES.md, color: COLORS.textDark, textAlign: 'center', marginTop: SPACING.sm }}>
+          U shtuan {totalKcal} kcal për sot.
+        </Text>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -727,12 +759,12 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 12,
+    paddingHorizontal: SPACING.md,
   },
   backBtn: {
     width: 44,
     height: 36,
-    borderRadius: 10,
+    borderRadius: BORDER_RADIUS.md,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -740,74 +772,83 @@ const s = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: '800',
+    letterSpacing: 0.3,
   },
   wrap: {
-    padding: 16,
-    gap: 14,
+    padding: SPACING.lg,
+    gap: SPACING.md,
   },
   card: {
     backgroundColor: COLORS.card,
     padding: 14,
     borderRadius: 16,
+    shadowColor: '#000',
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
     elevation: 2,
   },
   cardTitle: {
     color: COLORS.green,
-    fontSize: 18,
-    fontWeight: '800',
-    marginBottom: 8,
+    fontSize: FONT_SIZES.lg,
+    fontWeight: FONT_WEIGHTS.extraBold,
+    marginBottom: SPACING.sm,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: 10,
-    marginBottom: 10,
-    padding: 6,
-    borderRadius: 10,
+    gap: SPACING.sm,
+    marginBottom: SPACING.sm,
+    padding: SPACING.xs,
+    borderRadius: BORDER_RADIUS.md,
   },
   rowActive: {
     backgroundColor: '#e6efd9',
   },
   mealTitle: {
-    fontSize: 14,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.sm,
+    fontWeight: FONT_WEIGHTS.bold,
     color: COLORS.textDark,
   },
   mealSubtitle: {
-    fontSize: 12,
+    fontSize: FONT_SIZES.xs,
     color: '#444',
   },
   mealKcal: {
-    fontSize: 12,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.xs,
+    fontWeight: FONT_WEIGHTS.bold,
     color: COLORS.green,
-    marginTop: 2,
+    marginTop: SPACING.xs,
   },
   tip: {
+    color: COLORS.textDark,
+    opacity: 0.9,
+    marginBottom: SPACING.xs,
+    lineHeight: 20,
     fontSize: 13,
-    marginBottom: 6,
   },
   totalWrap: {
-    backgroundColor: COLORS.cardSoft,
-    borderRadius: 14,
-    padding: 12,
-    marginTop: 8,
+    backgroundColor: COLORS.inputBg,
+    borderRadius: BORDER_RADIUS.lg,
+    padding: SPACING.md,
+    marginTop: SPACING.sm,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   totalText: {
+    color: COLORS.textDark,
     fontSize: 16,
     fontWeight: '700',
   },
   saveBtn: {
     backgroundColor: COLORS.green,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 10,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.sm,
+    borderRadius: BORDER_RADIUS.md,
   },
   error: {
-    color: '#C0392B',
-    marginTop: 12,
+    color: COLORS.error,
+    marginTop: SPACING.md,
   },
 });
