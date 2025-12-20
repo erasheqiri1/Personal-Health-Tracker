@@ -1,4 +1,4 @@
-// // perdorim te ushtrime edhe ushqime
+
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { memo } from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
