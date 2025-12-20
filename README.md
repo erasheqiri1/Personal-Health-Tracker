@@ -98,3 +98,13 @@ npm run web
 
 Hapeni me:
 - **Web (Browser)**
+
+
+  ## 🧪 Testing
+Për fazën e testimit kemi përdorur Jest dhe React Testing Library.
+- Snapshot Tests: Verifikojnë që UI nuk ndryshon papritur.
+- Interaction Tests: Testimi i shtypjes së butonave (fireEvent).
+- Mocking: Kemi bërë mock Firebase-in për të simuluar Auth dhe Firestore.
+
+Udhëzimi për testim:
+Run `npm test`
