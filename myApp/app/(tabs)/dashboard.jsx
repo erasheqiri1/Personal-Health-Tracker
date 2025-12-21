@@ -2541,7 +2541,7 @@ out center;`.trim();
         {/* MOTI */}
         <View style={[styles.cardBase, styles.weatherCard]}>
           <View style={styles.weatherHeaderRow}>
-            <Text style={styles.weatherTitle}>Motiiiiiii sot</Text>
+            <Text style={styles.weatherTitle}>Moti sot</Text>
             {cityName && <Text style={styles.weatherCitySmall}>{cityName}</Text>}
           </View>
 
@@ -2672,8 +2672,8 @@ out center;`.trim();
               onChangeText={handleSearchTextChange}
               onSubmitEditing={handleSearch}
             />
-            <TouchableOpacity style={styles.searchBtn} onPress={handleSearch}>
-              <Text style={styles.searchBtnText}>Kërkoooooo</Text>
+            <TouchableOpacity style={styles.searchBtn} onPress={handleSearch}>s
+              <Text style={styles.searchBtnText}>Kërko</Text>
             </TouchableOpacity>
           </View>
 
