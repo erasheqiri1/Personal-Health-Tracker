@@ -1,4 +1,4 @@
-// perdoret te admin/ushtrime/weightlifitng edhe homeworkout
+
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {
   addDoc,
@@ -10,7 +10,12 @@ import {
   updateDoc,
   where,
 } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  memo,
+} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -30,9 +35,54 @@ const COLORS = {
   cardSoft: '#EFE8CF',
 };
 
+
+const WorkoutRow = memo(({ item, onEdit, onDelete }) => (
+  <View style={s.row}>
+    <View style={{ marginRight: 10, justifyContent: 'center' }}>
+      {item.icon ? (
+        <MaterialCommunityIcons
+          name={item.icon}
+          size={30}
+          color={COLORS.green}
+        />
+      ) : (
+        <Text style={{ fontSize: 10, color: '#777' }}>pa ikonë</Text>
+      )}
+    </View>
+
+    <View style={{ flex: 1 }}>
+      <Text style={s.sectionText}>
+        {item.section === 'upper'
+          ? 'Pjesa sipërm'
+          : item.section === 'lower'
+          ? 'Pjesa e poshtme'
+          : 'Gjithë trupi'}
+      </Text>
+      <Text style={s.title}>{item.title}</Text>
+      <Text style={s.subtitle}>{item.subtitle}</Text>
+      <Text style={s.kcal}>{item.calories} kcal</Text>
+      {item.icon ? (
+        <Text style={s.iconName}>Ikona: {item.icon}</Text>
+      ) : null}
+    </View>
+
+    <View style={s.actions}>
+      <Pressable style={s.smallBtn} onPress={() => onEdit(item)}>
+        <Text style={s.smallBtnText}>Edit</Text>
+      </Pressable>
+      <Pressable
+        style={[s.smallBtn, { backgroundColor: '#C0392B' }]}
+        onPress={() => onDelete(item.id)}
+      >
+        <Text style={s.smallBtnText}>Fshi</Text>
+      </Pressable>
+    </View>
+  </View>
+));
+
 export default function WorkoutPlanAdmin({ planKey, headerText }) {
   const [workouts, setWorkouts] = useState([]);
-  const [section, setSection] = useState('upper'); // upper | lower | full
+  const [section, setSection] = useState('upper');
   const [title, setTitle] = useState('');
   const [subtitle, setSubtitle] = useState('');
   const [calories, setCalories] = useState('');
@@ -44,13 +94,15 @@ export default function WorkoutPlanAdmin({ planKey, headerText }) {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // READ – leximi i ushtrimeve sipas planKey
+  /* =========================
+     READ – Firestore
+     ========================= */
   useEffect(() => {
     setLoading(true);
 
     const q = query(
       collection(db, 'workouts'),
-      where('plan', '==', planKey),
+      where('plan', '==', planKey)
     );
 
     const unsub = onSnapshot(
@@ -83,7 +135,7 @@ export default function WorkoutPlanAdmin({ planKey, headerText }) {
     setEditingId(null);
   };
 
-  // CREATE / UPDATE
+ 
   const handleSave = async () => {
     setError('');
     setSuccess('');
@@ -99,13 +151,12 @@ export default function WorkoutPlanAdmin({ planKey, headerText }) {
       return;
     }
 
-    const iconTrimmed = icon.trim(); // mundet me qenë bosh
+    const iconTrimmed = icon.trim();
 
     setSaving(true);
     try {
       if (editingId) {
-        const ref = doc(db, 'workouts', editingId);
-        await updateDoc(ref, {
+        await updateDoc(doc(db, 'workouts', editingId), {
           section,
           title: title.trim(),
           subtitle: subtitle.trim(),
@@ -134,7 +185,7 @@ export default function WorkoutPlanAdmin({ planKey, headerText }) {
     }
   };
 
-  const handleEdit = item => {
+  const handleEdit = useCallback(item => {
     setEditingId(item.id);
     setSection(item.section);
     setTitle(item.title);
@@ -143,63 +194,33 @@ export default function WorkoutPlanAdmin({ planKey, headerText }) {
     setIcon(item.icon || '');
     setError('');
     setSuccess('');
-  };
+  }, []);
 
-  const handleDelete = async id => {
-    setError('');
-    setSuccess('');
-    try {
-      await deleteDoc(doc(db, 'workouts', id));
-      setSuccess('U fshi ushtrimi.');
-      if (editingId === id) resetForm();
-    } catch (e) {
-      console.log('Delete error:', e);
-      setError('S’u fshi ushtrimi.');
-    }
-  };
+  const handleDelete = useCallback(
+    async id => {
+      setError('');
+      setSuccess('');
+      try {
+        await deleteDoc(doc(db, 'workouts', id));
+        setSuccess('U fshi ushtrimi.');
+        if (editingId === id) resetForm();
+      } catch (e) {
+        console.log('Delete error:', e);
+        setError('S’u fshi ushtrimi.');
+      }
+    },
+    [editingId]
+  );
 
-  const renderItem = ({ item }) => (
-    <View style={s.row}>
-      <View style={{ marginRight: 10, justifyContent: 'center' }}>
-        {item.icon ? (
-          <MaterialCommunityIcons
-            name={item.icon}
-            size={30}
-            color={COLORS.green}
-          />
-        ) : (
-          <Text style={{ fontSize: 10, color: '#777' }}>pa ikonë</Text>
-        )}
-      </View>
-
-      <View style={{ flex: 1 }}>
-        <Text style={s.sectionText}>
-          {item.section === 'upper'
-            ? 'Pjesa sipërm'
-            : item.section === 'lower'
-            ? 'Pjesa e poshtme'
-            : 'Gjithë trupi'}
-        </Text>
-        <Text style={s.title}>{item.title}</Text>
-        <Text style={s.subtitle}>{item.subtitle}</Text>
-        <Text style={s.kcal}>{item.calories} kcal</Text>
-        {item.icon ? (
-          <Text style={s.iconName}>Ikona: {item.icon}</Text>
-        ) : null}
-      </View>
-
-      <View style={s.actions}>
-        <Pressable style={s.smallBtn} onPress={() => handleEdit(item)}>
-          <Text style={s.smallBtnText}>Edit</Text>
-        </Pressable>
-        <Pressable
-          style={[s.smallBtn, { backgroundColor: '#C0392B' }]}
-          onPress={() => handleDelete(item.id)}
-        >
-          <Text style={s.smallBtnText}>Fshi</Text>
-        </Pressable>
-      </View>
-    </View>
+  const renderItem = useCallback(
+    ({ item }) => (
+      <WorkoutRow
+        item={item}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
+    ),
+    [handleEdit, handleDelete]
   );
 
   return (
@@ -227,47 +248,30 @@ export default function WorkoutPlanAdmin({ planKey, headerText }) {
         {editingId ? 'Përditëso ushtrimin' : 'Shto ushtrim të ri'}
       </Text>
 
-      {/* Zgjedhja e seksionit */}
       <View style={s.sectionRow}>
-        <Pressable
-          style={[s.sectionChip, section === 'upper' && s.sectionChipActive]}
-          onPress={() => setSection('upper')}
-        >
-          <Text
+        {['upper', 'lower', 'full'].map(sec => (
+          <Pressable
+            key={sec}
             style={[
-              s.sectionChipText,
-              section === 'upper' && s.sectionChipTextActive,
+              s.sectionChip,
+              section === sec && s.sectionChipActive,
             ]}
+            onPress={() => setSection(sec)}
           >
-            Pjesa e sipërm
-          </Text>
-        </Pressable>
-        <Pressable
-          style={[s.sectionChip, section === 'lower' && s.sectionChipActive]}
-          onPress={() => setSection('lower')}
-        >
-          <Text
-            style={[
-              s.sectionChipText,
-              section === 'lower' && s.sectionChipTextActive,
-            ]}
-          >
-            Pjesa e poshtme
-          </Text>
-        </Pressable>
-        <Pressable
-          style={[s.sectionChip, section === 'full' && s.sectionChipActive]}
-          onPress={() => setSection('full')}
-        >
-          <Text
-            style={[
-              s.sectionChipText,
-              section === 'full' && s.sectionChipTextActive,
-            ]}
-          >
-            Gjithë trupi
-          </Text>
-        </Pressable>
+            <Text
+              style={[
+                s.sectionChipText,
+                section === sec && s.sectionChipTextActive,
+              ]}
+            >
+              {sec === 'upper'
+                ? 'Pjesa sipërm'
+                : sec === 'lower'
+                ? 'Pjesa e poshtme'
+                : 'Gjithë trupi'}
+            </Text>
+          </Pressable>
+        ))}
       </View>
 
       <TextInput
@@ -290,7 +294,6 @@ export default function WorkoutPlanAdmin({ planKey, headerText }) {
         onChangeText={setCalories}
       />
 
-      {/* Fusha për ikonën */}
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TextInput
           style={[s.input, { flex: 1 }]}
@@ -306,7 +309,9 @@ export default function WorkoutPlanAdmin({ planKey, headerText }) {
               color={COLORS.green}
             />
           ) : (
-            <Text style={{ fontSize: 10, color: '#777' }}>preview</Text>
+            <Text style={{ fontSize: 10, color: '#777' }}>
+              preview
+            </Text>
           )}
         </View>
       </View>

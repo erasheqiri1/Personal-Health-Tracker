@@ -1,4 +1,4 @@
-// perdoret te admin/ushqime/shto,humb,mbaj pesh
+
 import {
   addDoc,
   collection,
@@ -9,7 +9,12 @@ import {
   updateDoc,
   where,
 } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  memo,
+} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -29,9 +34,38 @@ const COLORS = {
   cardSoft: '#EFE8CF',
 };
 
+
+const MealRow = memo(({ item, onEdit, onDelete }) => (
+  <View style={s.mealRow}>
+    <View style={{ flex: 1 }}>
+      <Text style={s.mealSection}>
+        {item.section === 'menges'
+          ? 'Mëngjes'
+          : item.section === 'dreka'
+          ? 'Dreka'
+          : 'Darkë'}
+      </Text>
+      <Text style={s.mealTitle}>{item.title}</Text>
+      <Text style={s.mealSubtitle}>{item.subtitle}</Text>
+      <Text style={s.mealKcal}>{item.calories} kcal</Text>
+    </View>
+    <View style={s.mealActions}>
+      <Pressable style={s.smallBtn} onPress={() => onEdit(item)}>
+        <Text style={s.smallBtnText}>Edit</Text>
+      </Pressable>
+      <Pressable
+        style={[s.smallBtn, { backgroundColor: '#C0392B' }]}
+        onPress={() => onDelete(item.id)}
+      >
+        <Text style={s.smallBtnText}>Fshi</Text>
+      </Pressable>
+    </View>
+  </View>
+));
+
 export default function PlanMealsAdmin({ planKey, headerText }) {
   const [meals, setMeals] = useState([]);
-  const [section, setSection] = useState('menges'); // menges | dreka | darke
+  const [section, setSection] = useState('menges');
   const [title, setTitle] = useState('');
   const [subtitle, setSubtitle] = useState('');
   const [calories, setCalories] = useState('');
@@ -42,7 +76,6 @@ export default function PlanMealsAdmin({ planKey, headerText }) {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Leximi nga Firestore sipas planKey
   useEffect(() => {
     setLoading(true);
 
@@ -80,6 +113,9 @@ export default function PlanMealsAdmin({ planKey, headerText }) {
     setEditingId(null);
   };
 
+  /* =========================
+     CREATE / UPDATE
+     ========================= */
   const handleSave = async () => {
     setError('');
     setSuccess('');
@@ -98,8 +134,7 @@ export default function PlanMealsAdmin({ planKey, headerText }) {
     setSaving(true);
     try {
       if (editingId) {
-        const ref = doc(db, 'meals', editingId);
-        await updateDoc(ref, {
+        await updateDoc(doc(db, 'meals', editingId), {
           section,
           title: title.trim(),
           subtitle: subtitle.trim(),
@@ -126,7 +161,7 @@ export default function PlanMealsAdmin({ planKey, headerText }) {
     }
   };
 
-  const handleEdit = meal => {
+  const handleEdit = useCallback(meal => {
     setEditingId(meal.id);
     setSection(meal.section);
     setTitle(meal.title);
@@ -134,47 +169,33 @@ export default function PlanMealsAdmin({ planKey, headerText }) {
     setCalories(String(meal.calories));
     setError('');
     setSuccess('');
-  };
+  }, []);
 
-  const handleDelete = async id => {
-    setError('');
-    setSuccess('');
-    try {
-      await deleteDoc(doc(db, 'meals', id));
-      setSuccess('U fshi me sukses.');
-      if (editingId === id) resetForm();
-    } catch (e) {
-      console.log('Delete error:', e);
-      setError('S’u fshi ushqimi.');
-    }
-  };
+  const handleDelete = useCallback(
+    async id => {
+      setError('');
+      setSuccess('');
+      try {
+        await deleteDoc(doc(db, 'meals', id));
+        setSuccess('U fshi me sukses.');
+        if (editingId === id) resetForm();
+      } catch (e) {
+        console.log('Delete error:', e);
+        setError('S’u fshi ushqimi.');
+      }
+    },
+    [editingId]
+  );
 
-  const renderItem = ({ item }) => (
-    <View style={s.mealRow}>
-      <View style={{ flex: 1 }}>
-        <Text style={s.mealSection}>
-          {item.section === 'menges'
-            ? 'Mëngjes'
-            : item.section === 'dreka'
-            ? 'Dreka'
-            : 'Darkë'}
-        </Text>
-        <Text style={s.mealTitle}>{item.title}</Text>
-        <Text style={s.mealSubtitle}>{item.subtitle}</Text>
-        <Text style={s.mealKcal}>{item.calories} kcal</Text>
-      </View>
-      <View style={s.mealActions}>
-        <Pressable style={s.smallBtn} onPress={() => handleEdit(item)}>
-          <Text style={s.smallBtnText}>Edit</Text>
-        </Pressable>
-        <Pressable
-          style={[s.smallBtn, { backgroundColor: '#C0392B' }]}
-          onPress={() => handleDelete(item.id)}
-        >
-          <Text style={s.smallBtnText}>Fshi</Text>
-        </Pressable>
-      </View>
-    </View>
+  const renderItem = useCallback(
+    ({ item }) => (
+      <MealRow
+        item={item}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
+    ),
+    [handleEdit, handleDelete]
   );
 
   return (
@@ -203,45 +224,29 @@ export default function PlanMealsAdmin({ planKey, headerText }) {
       </Text>
 
       <View style={s.sectionRow}>
-        <Pressable
-          style={[s.sectionChip, section === 'menges' && s.sectionChipActive]}
-          onPress={() => setSection('menges')}
-        >
-          <Text
+        {['menges', 'dreka', 'darke'].map(sec => (
+          <Pressable
+            key={sec}
             style={[
-              s.sectionChipText,
-              section === 'menges' && s.sectionChipTextActive,
+              s.sectionChip,
+              section === sec && s.sectionChipActive,
             ]}
+            onPress={() => setSection(sec)}
           >
-            Mëngjes
-          </Text>
-        </Pressable>
-        <Pressable
-          style={[s.sectionChip, section === 'dreka' && s.sectionChipActive]}
-          onPress={() => setSection('dreka')}
-        >
-          <Text
-            style={[
-              s.sectionChipText,
-              section === 'dreka' && s.sectionChipTextActive,
-            ]}
-          >
-            Drekë
-          </Text>
-        </Pressable>
-        <Pressable
-          style={[s.sectionChip, section === 'darke' && s.sectionChipActive]}
-          onPress={() => setSection('darke')}
-        >
-          <Text
-            style={[
-              s.sectionChipText,
-              section === 'darke' && s.sectionChipTextActive,
-            ]}
-          >
-            Darkë
-          </Text>
-        </Pressable>
+            <Text
+              style={[
+                s.sectionChipText,
+                section === sec && s.sectionChipTextActive,
+              ]}
+            >
+              {sec === 'menges'
+                ? 'Mëngjes'
+                : sec === 'dreka'
+                ? 'Drekë'
+                : 'Darkë'}
+            </Text>
+          </Pressable>
+        ))}
       </View>
 
       <TextInput

@@ -1,8 +1,14 @@
+
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+} from 'react';
 import {
   Alert,
   Dimensions,
@@ -11,6 +17,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  FlatList,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -24,7 +31,7 @@ import {
   setDoc,
   where,
 } from 'firebase/firestore';
-import { auth, db } from '../firebaseConfig'; // SIGUROHU që ky path ekziston
+import { auth, db } from '../firebaseConfig';
 
 const COLORS = {
   green: '#355E3B',
@@ -34,17 +41,32 @@ const COLORS = {
   cardSoft: '#EFE8CF',
 };
 
-/**
- * Komponent i përbashkët për ushtrimet:
- *
- * props:
- * - planKey: 'homeworkout' | 'weightlifting'
- * - headerTitle: p.sh. "Home Workout", "Weightlifting"
- * - activeTabLabel: teksti i tab-it aktiv
- * - otherTabLabel: teksti i tab-it tjetër
- * - otherTabRoute: ruta p.sh. "/ushtrime/weightlifting"
- * - bgIcons: array me ikonat dekorative në sfond
- */
+/* =========================
+   Memoized workout row
+   ========================= */
+const WorkoutRow = React.memo(({ item, label }) => (
+  <View style={styles.rowCard}>
+    <View style={styles.rowIconWrap}>
+      <MaterialCommunityIcons
+        name={item.icon}
+        size={44}
+        color={COLORS.green}
+      />
+    </View>
+
+    <View style={{ flex: 1 }}>
+      <Text style={styles.rowTitle}>{item.title}</Text>
+      <Text style={styles.rowSection}>{label}</Text>
+    </View>
+
+    <MaterialCommunityIcons
+      name="chevron-right"
+      size={26}
+      color={COLORS.green}
+    />
+  </View>
+));
+
 export default function WorkoutPlanScreen({
   planKey,
   headerTitle,
@@ -57,7 +79,7 @@ export default function WorkoutPlanScreen({
   const { width: W, height: H } = Dimensions.get('window');
   const insets = useSafeAreaInsets();
 
-  const [user, setUser] = useState(null);          // user lokal për këtë screen
+  const [user, setUser] = useState(null);
   const [exercises, setExercises] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [minutes, setMinutes] = useState(20);
@@ -66,14 +88,19 @@ export default function WorkoutPlanScreen({
   const [loading, setLoading] = useState(true);
   const [authLoading, setAuthLoading] = useState(true);
 
-  const getSectionLabel = section => {
+  /* =========================
+     Section label (memoized)
+     ========================= */
+  const getSectionLabel = useCallback(section => {
     if (section === 'upper') return 'Trup i sipërm';
     if (section === 'lower') return 'Trup i poshtëm';
     if (section === 'full') return 'Gjithë trupi';
     return '';
-  };
+  }, []);
 
-  // 1) Dëgjo gjendjen e Auth (kjo zëvendëson useAuth)
+  /* =========================
+     Auth listener
+     ========================= */
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, u => {
       setUser(u || null);
@@ -82,7 +109,9 @@ export default function WorkoutPlanScreen({
     return unsub;
   }, []);
 
-  // 2) Leximi i ushtrimeve për këtë plan (homeworkout / weightlifting)
+  /* =========================
+     Read workouts
+     ========================= */
   useEffect(() => {
     setLoading(true);
     const q = query(collection(db, 'workouts'), where('plan', '==', planKey));
@@ -108,12 +137,13 @@ export default function WorkoutPlanScreen({
     );
 
     return () => unsub();
-  }, [planKey]);
+  }, [planKey, selectedId]);
 
-  // 3) Lexo totalin e kalorive për sot nga Firestore + AsyncStorage
+  /* =========================
+     Load daily total
+     ========================= */
   useEffect(() => {
-    if (authLoading) return; // prit derisa Firebase Auth me u bo gati
-    if (!user) return;       // nëse s’ka user, mos prek AsyncStorage / Firestore
+    if (authLoading || !user) return;
 
     const loadTotal = async () => {
       const today = new Date().toISOString().slice(0, 10);
@@ -124,19 +154,14 @@ export default function WorkoutPlanScreen({
         const snap = await getDoc(docRef);
 
         if (snap.exists()) {
-          const data = snap.data();
-          const total = Number(data.totalCalories || 0);
+          const total = Number(snap.data().totalCalories || 0);
           setTotalCalories(total);
-
-          // sync edhe në AsyncStorage që ta lexojë HealthWidgets
           await AsyncStorage.setItem(localKey, String(total));
         } else {
           setTotalCalories(0);
           await AsyncStorage.setItem(localKey, '0');
         }
-      } catch (e) {
-        console.log('loadTotal Firestore error:', e);
-        // fallback në AsyncStorage (p.sh. offline)
+      } catch {
         const localVal = await AsyncStorage.getItem(localKey);
         setTotalCalories(localVal ? Number(localVal) : 0);
       }
@@ -145,43 +170,46 @@ export default function WorkoutPlanScreen({
     loadTotal();
   }, [authLoading, user, planKey]);
 
-  // 4) Llogaritja dhe ruajtja e kalorive
-  const calcCalories = async () => {
+  /* =========================
+     Selected exercise (memo)
+     ========================= */
+  const selectedExercise = useMemo(
+    () => exercises.find(e => e.id === selectedId),
+    [exercises, selectedId]
+  );
+
+  /* =========================
+     Calculate calories
+     ========================= */
+  const calcCalories = useCallback(async () => {
     if (!user) {
       Alert.alert('Gabim', 'Nuk ka user të loguar.');
       return;
     }
-
     if (!selectedId) {
       Alert.alert('Kujdes', 'Zgjedh një ushtrim.');
       return;
     }
-
-    const ex = exercises.find(e => e.id === selectedId);
-    if (!ex) {
+    if (!selectedExercise) {
       Alert.alert('Gabim', 'Ushtrimi nuk u gjet.');
       return;
     }
 
-    const base = Number(ex.calories) || 0;
+    const base = Number(selectedExercise.calories) || 0;
     const total = Math.round((base * minutes) / 30);
-
     setLastCalories(total);
 
     const today = new Date().toISOString().slice(0, 10);
     const localKey = `workout_kcal_${today}`;
 
     try {
-      // 1) Lexo totalin ekzistues nga AsyncStorage (cache ditore)
       const prev = await AsyncStorage.getItem(localKey);
       const prevNum = prev ? Number(prev) : (totalCalories || 0);
       const newTotal = prevNum + total;
 
-      // Ruaj në AsyncStorage – që ta shohë HealthWidgets
       await AsyncStorage.setItem(localKey, String(newTotal));
       setTotalCalories(newTotal);
 
-      // 2) Ruaj në Firestore
       const docRef = doc(db, 'workoutDaily', `${user.uid}_${today}`);
       await setDoc(
         docRef,
@@ -201,13 +229,11 @@ export default function WorkoutPlanScreen({
       console.log('calcCalories error:', e);
       Alert.alert('Gabim', 'S’u ruajtën kaloritë.');
     }
-  };
-
-  const selectedExercise = exercises.find(e => e.id === selectedId);
+  }, [user, selectedId, selectedExercise, minutes, totalCalories, planKey]);
 
   return (
     <SafeAreaView style={styles.safe}>
-      {/* Ikonat dekorative në sfond */}
+      {/* Background icons */}
       <View style={styles.bgLayer} pointerEvents="none">
         {bgIcons.map((icon, i) => {
           const size = Math.round(Math.min(W, H) * icon.sizeMul);
@@ -264,41 +290,30 @@ export default function WorkoutPlanScreen({
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 40 }}
         >
-          {/* Lista e ushtrimeve */}
+          {/* Workout list */}
           {loading ? (
-            <Text style={{ marginVertical: 16 }}>Duke u ngarkuar ushtrimet...</Text>
+            <Text style={{ marginVertical: 16 }}>
+              Duke u ngarkuar ushtrimet...
+            </Text>
           ) : (
-            exercises.map(item => (
-              <View key={item.id} style={styles.rowCard}>
-                <View style={styles.rowIconWrap}>
-                  <MaterialCommunityIcons
-                    name={item.icon}
-                    size={44}
-                    color={COLORS.green}
-                  />
-                </View>
-
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.rowTitle}>{item.title}</Text>
-                  <Text style={styles.rowSection}>
-                    {getSectionLabel(item.section)}
-                  </Text>
-                </View>
-
-                <MaterialCommunityIcons
-                  name="chevron-right"
-                  size={26}
-                  color={COLORS.green}
+            <FlatList
+              data={exercises}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => (
+                <WorkoutRow
+                  item={item}
+                  label={getSectionLabel(item.section)}
                 />
-              </View>
-            ))
+              )}
+            />
           )}
 
           <View style={{ height: 30 }} />
 
-          {/* Llogaritja e kalorive */}
+          {/* Calories card */}
           <View style={styles.card}>
             <Text style={styles.label}>Zgjedh çka ke ushtru sot</Text>
+
             <Picker
               selectedValue={selectedId}
               onValueChange={v => setSelectedId(v)}

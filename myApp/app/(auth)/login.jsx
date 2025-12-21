@@ -1,18 +1,21 @@
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { router, Stack } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Alert,
+  Animated,
   Image,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Pressable } from 'react-native';
+import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 
 import {
@@ -26,14 +29,8 @@ import {
 
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../../firebaseConfig';
-
-const COLORS = {
-  green: '#355E3B',
-  bg: '#F7F2DF',
-  inputBg: '#F1EFDF',
-  border: '#D7D2B8',
-  textDark: '#1F3D26',
-};
+import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZES, FONT_WEIGHTS } from '../../constants';
+import AnimatedButton from '../../components/AnimatedButton';
 
 const ADMIN_EMAIL = 'test1@gmail.com';
 
@@ -43,6 +40,15 @@ export default function Login() {
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim]);
 
   const redirectAfterLogin = (user) => {
     const userEmail = (user?.email || '').toLowerCase();
@@ -169,7 +175,7 @@ export default function Login() {
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
-        <View style={s.container}>
+        <Animated.View style={[s.container, { opacity: fadeAnim }]}>
             <View style={s.logoWrap}>
             <RunIcon />
             <Text style={s.appTitle}>
@@ -181,7 +187,7 @@ export default function Login() {
           <View style={s.form}>
             <TextInput
               placeholder="Email"
-              placeholderTextColor="#7C8A7F"
+              placeholderTextColor={COLORS.placeholder}
               style={s.input}
               autoCapitalize="none"
               keyboardType="email-address"
@@ -193,13 +199,13 @@ export default function Login() {
             <View style={{ position: 'relative' }}>
               <TextInput
                 placeholder="Fjalëkalimi"
-                placeholderTextColor="#7C8A7F"
+                placeholderTextColor={COLORS.placeholder}
                 style={[s.input, { paddingRight: 48 }]}
                 secureTextEntry={!showPass}
                 value={password}
                 onChangeText={setPassword}
               />
-              <Pressable
+              <TouchableOpacity
                 onPress={() => setShowPass((v) => !v)}
                 style={s.eyeBtn}
                 hitSlop={8}
@@ -209,23 +215,20 @@ export default function Login() {
                   size={18}
                   color={COLORS.green}
                 />
-              </Pressable>
+              </TouchableOpacity>
             </View>
 
             {error ? <Text style={s.error}>{error}</Text> : null}
 
-            <Pressable
-              style={({ pressed }) => [
-                s.primaryBtn,
-                (pressed || loading) && { opacity: 0.9 },
-              ]}
+            <AnimatedButton
               onPress={handleEmailLogin}
               disabled={loading}
+              style={s.primaryBtn}
             >
               <Text style={s.primaryTxt}>
                 {loading ? 'Duke u kyçur...' : 'HYR'}
               </Text>
-            </Pressable>
+            </AnimatedButton>
 
             <View style={s.dividerRow}>
               <View style={s.divider} />
@@ -234,37 +237,34 @@ export default function Login() {
             </View>
 
             <View style={s.socialRow}>
-              <Pressable style={s.socialBtn} onPress={handleGoogleLogin}>
+              <AnimatedButton style={s.socialBtn} onPress={handleGoogleLogin}>
                 <Image
                   source={require('../../assets/icons/google.png')}
                   style={{ width: 22, height: 22, resizeMode: 'contain' }}
                 />
-              </Pressable>
+              </AnimatedButton>
 
-              <Pressable style={s.socialBtn} onPress={handleMicrosoftLogin}>
+              <AnimatedButton style={s.socialBtn} onPress={handleMicrosoftLogin}>
                 <FontAwesome5 name="microsoft" size={20} color="#0078D4" />
-              </Pressable>
+              </AnimatedButton>
 
-              <Pressable style={s.socialBtn} onPress={handleGitHubLogin}>
+              <AnimatedButton style={s.socialBtn} onPress={handleGitHubLogin}>
                 <FontAwesome5 name="github" size={20} color="#000000" />
-              </Pressable>
+              </AnimatedButton>
 
-              <Pressable style={s.socialBtn} onPress={handleFacebookLogin}>
+              <AnimatedButton style={s.socialBtn} onPress={handleFacebookLogin}>
                 <FontAwesome5 name="facebook" size={20} color="#1877F2" />
-              </Pressable>
+              </AnimatedButton>
             </View>
           </View>
 
           <Text style={s.footer}>
             S’keni një llogari?{' '}
-            <Text
-              style={s.footerLink}
-              onPress={() => router.push('/(auth)/signup')}
-            >
-              Regjistrohu
-            </Text>
+            <TouchableOpacity onPress={() => router.push('/(auth)/signup')}>
+              <Text style={s.footerLink}>Regjistrohu</Text>
+            </TouchableOpacity>
           </Text>
-        </View>
+        </Animated.View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -281,109 +281,109 @@ function RunIcon() {
 const s = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 28,
+    paddingHorizontal: SPACING.xxxl,
     alignItems: 'center',
     justifyContent: 'center',
   },
   logoWrap: {
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: SPACING.xxl,
   },
   appTitle: {
     textAlign: 'center',
-    color: '#1F3D26',
-    fontSize: 24,
-    fontWeight: '800',
+    color: COLORS.textDark,
+    fontSize: FONT_SIZES.xxl,
+    fontWeight: FONT_WEIGHTS.extraBold,
     letterSpacing: 1,
     lineHeight: 28,
-    marginTop: 10,
+    marginTop: SPACING.sm,
   },
   form: {
     width: '100%',
-    marginTop: 4,
-    marginBottom: 12,
+    marginTop: SPACING.xs,
+    marginBottom: SPACING.md,
   },
   input: {
     backgroundColor: COLORS.inputBg,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
+    borderRadius: BORDER_RADIUS.md,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.md,
     borderWidth: 1,
     borderColor: COLORS.border,
-    fontSize: 15,
+    fontSize: FONT_SIZES.md,
     color: COLORS.textDark,
-    marginBottom: 12,
+    marginBottom: SPACING.md,
   },
   eyeBtn: {
     position: 'absolute',
-    right: 14,
-    top: 14,
+    right: SPACING.md,
+    top: SPACING.md,
   },
   error: {
-    color: '#C0392B',
-    fontSize: 13,
-    fontWeight: '600',
-    marginBottom: 8,
+    color: COLORS.error,
+    fontSize: FONT_SIZES.sm,
+    fontWeight: FONT_WEIGHTS.medium,
+    marginBottom: SPACING.sm,
   },
   primaryBtn: {
     backgroundColor: COLORS.green,
-    borderRadius: 12,
-    paddingVertical: 14,
+    borderRadius: BORDER_RADIUS.md,
+    paddingVertical: SPACING.md,
     alignItems: 'center',
     justifyContent: 'center',
   },
   primaryTxt: {
-    color: 'white',
-    fontWeight: '800',
+    color: COLORS.white,
+    fontWeight: FONT_WEIGHTS.extraBold,
     letterSpacing: 1,
   },
   dividerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 16,
-    marginBottom: 10,
+    marginTop: SPACING.lg,
+    marginBottom: SPACING.sm,
   },
   divider: {
     flex: 1,
     height: 1,
-    backgroundColor: '#D3D3D3',
+    backgroundColor: COLORS.divider,
   },
   dividerText: {
-    marginHorizontal: 8,
-    fontSize: 12,
-    color: '#7C8A7F',
+    marginHorizontal: SPACING.sm,
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.placeholder,
     textTransform: 'uppercase',
-    fontWeight: '600',
+    fontWeight: FONT_WEIGHTS.medium,
   },
   socialRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 16,
-    marginBottom: 4,
+    gap: SPACING.lg,
+    marginBottom: SPACING.xs,
   },
   socialBtn: {
     width: 44,
     height: 44,
-    borderRadius: 22,
-    backgroundColor: '#FFFFFF',
+    borderRadius: BORDER_RADIUS.xl,
+    backgroundColor: COLORS.white,
     borderWidth: 1,
     borderColor: COLORS.border,
     alignItems: 'center',
     justifyContent: 'center',
   },
   footer: {
-    marginTop: 10,
+    marginTop: SPACING.sm,
     color: COLORS.green,
   },
   footerLink: {
-    fontWeight: '800',
+    fontWeight: FONT_WEIGHTS.extraBold,
     textDecorationLine: 'underline',
     color: COLORS.green,
   },
   runCircle: {
     width: 130,
     height: 130,
-    borderRadius: 65,
+    borderRadius: BORDER_RADIUS.xxl,
     backgroundColor: COLORS.green,
     alignItems: 'center',
     justifyContent: 'center',

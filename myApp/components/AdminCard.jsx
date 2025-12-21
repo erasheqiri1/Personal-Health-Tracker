@@ -1,5 +1,4 @@
-// eshte perdor te admin/dashboard.jsx
-import React from "react";
+import React, { memo } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 const COLORS = {
@@ -9,7 +8,7 @@ const COLORS = {
   textDark: "#2E2E2E",
 };
 
-export default function AdminCard({ icon, title, subtitle, onPress }) {
+function AdminCard({ icon, title, subtitle, onPress }) {
   return (
     <Pressable
       style={({ pressed }) => [
@@ -29,6 +28,10 @@ export default function AdminCard({ icon, title, subtitle, onPress }) {
     </Pressable>
   );
 }
+
+// 🔥 OPTIMIZIM PERFORMANCE
+// Komponent statik → nuk re-renderon pa ndryshim props
+export default memo(AdminCard);
 
 const styles = StyleSheet.create({
   card: {

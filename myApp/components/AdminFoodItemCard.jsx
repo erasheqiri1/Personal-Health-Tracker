@@ -1,5 +1,4 @@
-// components/FoodItemCard.jsx
-import React from "react";
+import React, { memo } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 const COLORS = {
@@ -9,7 +8,7 @@ const COLORS = {
   textDark: "#2E2E2E",
 };
 
-export default function AdminFoodItemCard({
+function AdminFoodItemCard({
   sectionLabel,   // "Mëngjes" / "Drekë" / "Darkë"
   title,
   subtitle,
@@ -37,6 +36,10 @@ export default function AdminFoodItemCard({
     </View>
   );
 }
+
+// 🔥 OPTIMIZIM PERFORMANCE
+// Komponent statik → re-render vetëm kur ndryshojnë props
+export default memo(AdminFoodItemCard);
 
 const s = StyleSheet.create({
   card: {

@@ -1,7 +1,5 @@
-//perdoret te admdin/ushqime/index dhe te admin/ushtrime/index
-
 import { Feather } from "@expo/vector-icons";
-import React from "react";
+import React, { memo } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 const COLORS = {
@@ -11,7 +9,7 @@ const COLORS = {
   textDark: "#2E2E2E",
 };
 
-export default function AdminOptionCard({ icon, title, subtitle, onPress }) {
+function AdminOptionCard({ icon, title, subtitle, onPress }) {
   return (
     <Pressable style={s.card} onPress={onPress}>
       <View style={s.row}>
@@ -27,6 +25,9 @@ export default function AdminOptionCard({ icon, title, subtitle, onPress }) {
     </Pressable>
   );
 }
+
+// Komponent statik → re-render vetëm kur ndryshojnë props
+export default memo(AdminOptionCard);
 
 const s = StyleSheet.create({
   card: {

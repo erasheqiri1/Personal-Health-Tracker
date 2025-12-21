@@ -1,4 +1,4 @@
-# 📱Personal Health Tracker App
+# Personal Health Tracker App
 - Personal Health Tracker është një aplikacion mobil i ndërtuar për t’i ndihmuar përdoruesit të kujdesen për shëndetin e tyre ditor. Aplikacioni kombinon ushqimin, ushtrimet, gjumin, dhe recetat ushqimore në një vend të vetëm, duke krijuar një përvojë të thjeshtë dhe praktike për menaxhimin e stilit të jetesës.
 - Përdoruesi krijon llogarinë e tij dhe aplikacioni i personalizohet automatikisht: çdo ditë ai mund të regjistrojë çfarë ka ngrënë, çfarë ushtrimesh ka bërë, sa ka fjetur, sa hapa ka bërë, dhe t’i shohë statistikat menjëherë në dashboard.
 - Aplikacioni ofron edhe plane ushqimore dhe ushtrimesh të ndara sipas qëllimit personal (humbje peshe, shtim peshe, ruajtje peshe), si dhe sjell receta të gatshme nga API të jashtme, duke e bërë planifikimin e ditës shumë më të lehtë.
@@ -28,51 +28,65 @@
     <img src="myApp/assets/foto13.PNG" width="190" height="400"/>
 </p>
 
-## ⭐ Features (të zgjeruara)
+##  Features (të zgjeruara)
 
-### 🔐 Authentication & User Security
+###  Authentication & User Security
 - Firebase Email/Password  
 - Social Logins (Web): Google, Microsoft, GitHub, Facebook  
 - Session Persistence (përdoruesi mbetet i kyçur edhe pas restart)  
 
 ---
 
-### 🧠 State Management & Logic
+###  State Management & Logic
 - `useState`, `useEffect`, `useRouter`  
 - Handling errors, loading, async operations  
 - Data sync me Firebase Firestore
 
   ---
-### 🥗 Food Tracking
+###  Food Tracking
 - Regjistrim i vakteve ditore  
 - Llogaritje automatike e kalorive  
 - Shfaqje nutriente: protein, carbs, fats  
 - Skanim i barkodit ushqimor *(opsionale në të ardhmen)*  
 
 ---
-### 💪 Workout Tracking
+###  Workout Tracking
 - Regjistrim i ushtrimeve ditore  
 - Kalori të djegura  
 - Plane ushtrimesh sipas qëllimit  
 
 - 
-### 😴 Sleep Monitoring
+###  Sleep Monitoring
 - Orët e gjumit  
 - Kualiteti i gjumit  
 ---
 
-### 🍳 Recipes API Integration
+###  Recipes API Integration
 - TheMealDB  
 - OpenWeatherMap (+rekomandime sipas motit)  
   
-### 🧭 Navigation (expo-router)
+###  Navigation (expo-router)
 - Layout i pastër  
 - Navigim i thjeshtë për çdo moshë  
 - Bottom Tabs + Stack Navigation  
 
 ---
 
-## 🏗️ Tech Stack
+##  UI/UX Improvements
+
+### Layout dhe Dizajn i Pastër
+- **Ngjyra të njëtrajtshme**: Përdorim i konstantave të centralizuara për ngjyrat (COLORS) në të gjithë aplikacionin, duke siguruar konsistencë vizuale.
+- **Spacing dhe Padding**: Konstantat e centralizuara (SPACING) për hapësira uniforme, duke përmirësuar lexueshmërinë dhe dizajnin e pastër.
+- **Stilizim i njëtrajtshëm**: Aplikimi i stileve të përbashkëta në komponente si karta, butona dhe tekste, duke përdorur React Native StyleSheet me konstante.
+
+### Animacione
+- **Button Press**: Zëvendësimi i butonave standard me `AnimatedButton` (bazuar në `TouchableOpacity` me `activeOpacity` për efekt fade), duke siguruar feedback vizual gjatë shtypjes.
+- **Modal me Fade-in/out**: Komponenti `Modal` i personalizuar me animacione fade për hapje dhe mbyllje, duke përmirësuar përvojën e përdoruesit.
+- **Animacion në Përfundim të Detyrave**: Përdorim i modalit të suksesit me animacion fade për konfirmimin e veprimeve (p.sh., ruajtja e vakteve), duke motivuar përdoruesin me feedback të qartë.
+
+Këto përmirësime janë aplikuar në ekrane kryesore si `PlanMealsScreen`, `login`, `signup`, dhe komponente të ripërdorshme si `AnimatedButton` dhe `Modal`. Aplikacioni tani ka një ndjesi më moderne dhe të rrjedhshme, me performancë të optimizuar përmes memoizimit (useMemo, useCallback, React.memo).
+
+---
 
 | Shtresa | Teknologjia |
 |--------|-------------|
@@ -87,7 +101,7 @@
 ---
 
 
-## 📥 Install & Run
+##  Install & Run
 
 ```bash
 git clone <repo-url>
@@ -98,3 +112,13 @@ npm run web
 
 Hapeni me:
 - **Web (Browser)**
+
+
+  ##  Testing
+Për fazën e testimit kemi përdorur Jest dhe React Testing Library.
+- Snapshot Tests: Verifikojnë që UI nuk ndryshon papritur.
+- Interaction Tests: Testimi i shtypjes së butonave (fireEvent).
+- Mocking: Kemi bërë mock Firebase-in për të simuluar Auth dhe Firestore.
+
+Udhëzimi për testim:
+Run `npm test`

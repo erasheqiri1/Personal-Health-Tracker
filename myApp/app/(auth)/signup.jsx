@@ -1,12 +1,14 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
+  Animated,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
@@ -16,13 +18,8 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../../firebaseConfig';
-
-const COLORS = {
-  green: '#355E3B',
-  page: '#F9F6E8',
-  inputBg: '#F1EFDF',
-  border: '#D7D2B8',
-};
+import { COLORS, SPACING, BORDER_RADIUS, FONT_SIZES, FONT_WEIGHTS } from '../../constants';
+import AnimatedButton from '../../components/AnimatedButton';
 
 
 function Dropdown({ placeholder, value, onChange, options, style }) {
@@ -33,9 +30,10 @@ function Dropdown({ placeholder, value, onChange, options, style }) {
 
   return (
     <View style={style}>
-      <Pressable
+      <TouchableOpacity
         style={[s.input, s.dropInput]}
         onPress={() => setOpen((prev) => !prev)}
+        activeOpacity={0.8}
       >
         <Text
           style={value ? s.dropText : s.dropPlaceholder}
@@ -48,22 +46,23 @@ function Dropdown({ placeholder, value, onChange, options, style }) {
           size={14}
           color={COLORS.green}
         />
-      </Pressable>
+      </TouchableOpacity>
 
       {open && (
         <View style={s.dropList}>
           <ScrollView style={{ maxHeight: 180 }}>
             {options.map((opt) => (
-              <Pressable
+              <TouchableOpacity
                 key={opt.value}
                 style={s.dropItem}
                 onPress={() => {
                   onChange(opt.value);
                   setOpen(false);
                 }}
+                activeOpacity={0.8}
               >
                 <Text style={s.dropItemText}>{opt.label}</Text>
-              </Pressable>
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </View>
@@ -88,6 +87,15 @@ export default function Signup() {
 
   const [loading,   setLoading]   = useState(false);
   const [error,     setError]     = useState('');
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim]);
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
 
@@ -221,12 +229,13 @@ const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
   return (
     <>
       <ScrollView
-        contentContainerStyle={s.wrap}
+        contentContainerStyle={s.scrollWrap}
         keyboardShouldPersistTaps="handled"
       >
         <Stack.Screen options={{ headerShown: false }} />
 
-        <View style={s.brand}>
+        <Animated.View style={[s.wrap, { opacity: fadeAnim }]}>
+          <View style={s.brand}>
           <View style={s.runCircle}>
             <FontAwesome5 name="running" size={56} color="#FFFFFF" />
           </View>
@@ -306,37 +315,40 @@ const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
 
         {error ? <Text style={s.error}>{error}</Text> : null}
 
-        <Pressable
-          style={[s.primary, loading && { opacity: 0.7 }]}
+        <AnimatedButton
           onPress={handleSignup}
           disabled={loading}
+          style={s.primary}
         >
           <Text style={s.primaryTxt}>
             {loading ? 'Duke u regjistruar...' : 'RUAJ'}
           </Text>
-        </Pressable>
+        </AnimatedButton>
 
         <View style={s.loginRow}>
           <Text style={s.loginTxt}>Tashmë keni një llogari? </Text>
-          <Pressable onPress={() => router.push('/(auth)/login')}>
+          <TouchableOpacity onPress={() => router.push('/(auth)/login')}>
             <Text style={s.loginLink}>Hyr</Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
+        </Animated.View>
       </ScrollView>
     </>
   );
 }
 
 const s = StyleSheet.create({
-  wrap: {
+  scrollWrap: {
     flexGrow: 1,
+  },
+  wrap: {
     justifyContent: 'center',
-    padding: 24,
-    backgroundColor: COLORS.page,
+    padding: SPACING.xl,
+    backgroundColor: COLORS.bg,
   },
   brand: {
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: SPACING.xxl,
   },
   runCircle: {
     width: 90,
@@ -345,28 +357,28 @@ const s = StyleSheet.create({
     backgroundColor: COLORS.green,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 6,
+    marginBottom: SPACING.xs,
   },
   brandTitle: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '800',
+    marginTop: SPACING.sm,
+    fontSize: FONT_SIZES.lg,
+    fontWeight: FONT_WEIGHTS.extraBold,
     color: COLORS.green,
     letterSpacing: 0.5,
     textTransform: 'uppercase',
   },
   h1: {
-    fontSize: 22,
+    fontSize: FONT_SIZES.xxxl,
     color: COLORS.green,
-    fontWeight: '800',
-    marginBottom: 16,
+    fontWeight: FONT_WEIGHTS.extraBold,
+    marginBottom: SPACING.lg,
   },
   input: {
     backgroundColor: COLORS.inputBg,
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 14,
-    marginBottom: 12,
+    borderRadius: BORDER_RADIUS.md,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.md,
+    marginBottom: SPACING.md,
     borderWidth: 1,
     borderColor: COLORS.border,
     flexDirection: 'row',
@@ -375,7 +387,7 @@ const s = StyleSheet.create({
 
   row: {
     flexDirection: 'row',
-    marginBottom: 12,
+    marginBottom: SPACING.md,
   },
   col: {
     flex: 1,
@@ -385,88 +397,88 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
   },
   dropText: {
-    color: '#333',
+    color: COLORS.textDark,
     flex: 1,
-    marginRight: 8,
+    marginRight: SPACING.sm,
   },
   dropPlaceholder: {
-    color: '#8b8b8b',
+    color: COLORS.placeholder,
     flex: 1,
-    marginRight: 8,
+    marginRight: SPACING.sm,
   },
   dropList: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
+    backgroundColor: COLORS.white,
+    borderRadius: BORDER_RADIUS.md,
     borderWidth: 1,
     borderColor: COLORS.border,
-    marginTop: 4,
+    marginTop: SPACING.xs,
     overflow: 'hidden',
     elevation: 3,
   },
   dropItem: {
-    paddingVertical: 10,
-    paddingHorizontal: 12,
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.md,
   },
   dropItemText: {
-    fontSize: 14,
-    color: '#333',
+    fontSize: FONT_SIZES.sm,
+    color: COLORS.textDark,
   },
 
   checkboxRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 12,
+    marginVertical: SPACING.md,
   },
   checkbox: {
     width: 22,
     height: 22,
-    borderRadius: 6,
+    borderRadius: BORDER_RADIUS.sm,
     borderWidth: 1.5,
     borderColor: COLORS.green,
     backgroundColor: COLORS.inputBg,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10,
+    marginRight: SPACING.sm,
   },
   checkboxOn: {
     backgroundColor: COLORS.green,
   },
   checkmark: {
-    color: 'white',
-    fontWeight: '900',
+    color: COLORS.white,
+    fontWeight: FONT_WEIGHTS.extraBold,
     lineHeight: 18,
   },
   checkboxTxt: {
     color: COLORS.green,
-    fontWeight: '600',
+    fontWeight: FONT_WEIGHTS.medium,
   },
   error: {
-    color: '#C0392B',
-    marginBottom: 10,
-    fontSize: 13,
-    fontWeight: '600',
+    color: COLORS.error,
+    marginBottom: SPACING.sm,
+    fontSize: FONT_SIZES.sm,
+    fontWeight: FONT_WEIGHTS.medium,
   },
   primary: {
     backgroundColor: COLORS.green,
-    padding: 14,
-    borderRadius: 10,
+    padding: SPACING.md,
+    borderRadius: BORDER_RADIUS.md,
     alignItems: 'center',
   },
   primaryTxt: {
-    color: 'white',
-    fontWeight: '700',
+    color: COLORS.white,
+    fontWeight: FONT_WEIGHTS.bold,
     letterSpacing: 1,
   },
   loginRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 16,
+    marginTop: SPACING.lg,
   },
   loginTxt: {
-    color: '#5a5a5a',
+    color: COLORS.placeholder,
   },
   loginLink: {
     color: COLORS.green,
-    fontWeight: '800',
+    fontWeight: FONT_WEIGHTS.extraBold,
   },
 });
