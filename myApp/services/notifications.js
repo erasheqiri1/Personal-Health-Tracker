@@ -1,4 +1,4 @@
-// services/notifications.js
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
@@ -6,7 +6,6 @@ import { Platform } from "react-native";
 const KEY_ENABLED = "water_reminder_enabled";
 const KEY_ID = "water_reminder_id";
 
-// Kjo e bën njoftimin me dalë edhe kur app është open (foreground)
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -53,7 +52,7 @@ export async function scheduleHourlyWaterReminder() {
       body: "Mos harroni të pini ujë",
       sound: "default",
     },
-    // çdo 1 orë
+ 
     trigger: {
       seconds: 3600,
       repeats: true,
