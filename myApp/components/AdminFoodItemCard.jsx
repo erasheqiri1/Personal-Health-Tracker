@@ -37,8 +37,6 @@ function AdminFoodItemCard({
   );
 }
 
-// 🔥 OPTIMIZIM PERFORMANCE
-// Komponent statik → re-render vetëm kur ndryshojnë props
 export default memo(AdminFoodItemCard);
 
 const s = StyleSheet.create({

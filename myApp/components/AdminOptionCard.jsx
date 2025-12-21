@@ -26,7 +26,6 @@ function AdminOptionCard({ icon, title, subtitle, onPress }) {
   );
 }
 
-// Komponent statik → re-render vetëm kur ndryshojnë props
 export default memo(AdminOptionCard);
 
 const s = StyleSheet.create({

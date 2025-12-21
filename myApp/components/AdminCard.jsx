@@ -29,8 +29,6 @@ function AdminCard({ icon, title, subtitle, onPress }) {
   );
 }
 
-// 🔥 OPTIMIZIM PERFORMANCE
-// Komponent statik → nuk re-renderon pa ndryshim props
 export default memo(AdminCard);
 
 const styles = StyleSheet.create({

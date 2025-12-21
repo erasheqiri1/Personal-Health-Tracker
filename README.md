@@ -79,10 +79,10 @@ npx expo start
 
 ### Admin View
 <p align="center">
-  <img src="myApp/assets/foto1.PNG" width="220" height="400"/>
-  <img src="myApp/assets/foto2.PNG" width="220" height="400"/>
-  <img src="myApp/assets/foto3.PNG" width="220" height="400"/>
-  <img src="myApp/assets/foto4.PNG" width="220" height="400"/>
+  <img src="myApp/assets/foto1.PNG" width="215" height="400"/>
+  <img src="myApp/assets/foto2.PNG" width="215" height="400"/>
+  <img src="myApp/assets/foto3.PNG" width="215" height="400"/>
+  <img src="myApp/assets/foto4.PNG" width="215" height="400"/>
 </p>
 
 ### User View
