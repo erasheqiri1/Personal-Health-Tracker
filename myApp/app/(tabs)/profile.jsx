@@ -62,7 +62,7 @@ export default function Profile() {
 
   const [avatarUri, setAvatarUri] = useState(null);
 
-  // ✅ Notifications switch
+  
   const [waterReminderOn, setWaterReminderOn] = useState(false);
   const [notifBusy, setNotifBusy] = useState(false);
 
@@ -409,7 +409,7 @@ export default function Profile() {
         </Pressable>
       </View>
 
-      {/* ✅ Notifications - poshtë ikonave */}
+
       <View style={[styles.notifCard, { backgroundColor: COLORS.card }]}>
         <View style={{ flex: 1 }}>
           <Text style={{ fontSize: 16, fontWeight: "700", color: COLORS.textDark }}>Notifications</Text>
