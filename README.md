@@ -1,9 +1,50 @@
 # Personal Health Tracker App
-- Personal Health Tracker është një aplikacion mobil i ndërtuar për t’i ndihmuar përdoruesit të kujdesen për shëndetin e tyre ditor. Aplikacioni kombinon ushqimin, ushtrimet, gjumin, dhe recetat ushqimore në një vend të vetëm, duke krijuar një përvojë të thjeshtë dhe praktike për menaxhimin e stilit të jetesës.
-- Përdoruesi krijon llogarinë e tij dhe aplikacioni i personalizohet automatikisht: çdo ditë ai mund të regjistrojë çfarë ka ngrënë, çfarë ushtrimesh ka bërë, sa ka fjetur, sa hapa ka bërë, dhe t’i shohë statistikat menjëherë në dashboard.
-- Aplikacioni ofron edhe plane ushqimore dhe ushtrimesh të ndara sipas qëllimit personal (humbje peshe, shtim peshe, ruajtje peshe), si dhe sjell receta të gatshme nga API të jashtme, duke e bërë planifikimin e ditës shumë më të lehtë.
--Personal Health Tracker është i dizajnuar të jetë i thjeshtë për t'u përdorur, vizualisht i qartë, dhe i përshtatur për secilin përdorues individualisht. Qëllimi kryesor i tij është të krijojë një mënyrë të shpejtë dhe të lehtë për të ndjekur progresin shëndetësor dhe për të motivuar përdoruesin drejt një stili më të shëndetshëm jetese.
+- Personal Health Tracker është një aplikacion mobil që i ndihmon përdoruesit të ndjekin dhe menaxhojnë rutinën e tyre të shëndetit ditor, duke i motivuar drejt një stili më të shëndetshëm jetese.
 ----------------------------------------------------------------------------------------------------------
+###  Anëtarët e grupit:
+- Era Sheqiri
+- Aurore Smirqaku  
+- Artin Dulahi
+- Emir Bislimi
+- Ulp Bellaqa
+
+---
+### Dashboard inteligjent
+Dashboard-i shfaq përmbledhjen ditore të aktivitetit të përdoruesit dhe përdor lokacionin aktual, hartën dhe API për motin, duke e personalizuar përvojën sipas vendndodhjes së secilit përdorues.
+
+### Plane ushqimore të personalizuara (Meal Screen)
+Përdoruesi mund të zgjedhë mes tre planeve ushqimore:
+Humbje peshe
+Shtim peshe
+Mirëmbajtje peshe
+Planet janë të përshtatura për nevojat dhe qëllimet individuale.
+
+### Ushtrime për shtëpi dhe palestër (Home Workout Screen)
+Aplikacioni ofron ushtrime të strukturuara si për përdorim në shtëpi, ashtu edhe për weight lifting në palestër, duke i përshtatur për rutina të ndryshme fizike.
+
+### Profili i përdoruesit
+Përdoruesi mund të:
+Ndryshojë fotografinë e profilit përmes expo-image-picker
+Përditësojë të dhënat personale
+Aktivizojë ose çaktivizojë njoftimet (notifications) për rutina dhe aktivitete ditore
+
+### Autentifikim dhe siguri
+Implementohet autentifikimi me Firebase Authentication, duke përfshirë email/password dhe login social. Pas hyrjes, përdoruesi ridrejtohet automatikisht në ekranin kryesor dhe mund të kryejë logout në çdo kohë.
+
+### Menaxhimi i të dhënave (CRUD)
+Aplikacioni përdor Firebase Firestore për ruajtjen dhe menaxhimin e të dhënave dinamike, duke mundësuar shtimin, leximin, përditësimin dhe fshirjen e të dhënave shëndetësore.
+
+### Device features & optimizim performance
+Përdoren funksionalitete të pajisjes si GPS/Location, Camera/Image Picker dhe Local Notifications, të kombinuara me optimizime si FlatList, React.memo, useCallback dhe useMemo për një përvojë të qëndrueshme dhe të shpejtë.
+
+### Navigim dhe UI/UX
+Navigimi realizohet me Expo Router, ndërsa UI është i dizajnuar me ngjyra të njëtrajtshme, animacione të lehta dhe layout të qartë për përdorim intuitiv.
+
+---------------------------------------------------------------
+
+
+
+
 ## Screenshots
 
 ### Admin View
