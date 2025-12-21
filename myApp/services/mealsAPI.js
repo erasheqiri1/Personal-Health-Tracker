@@ -1,5 +1,5 @@
 
-const SPOONACULAR_API_KEY = "961d7ad801d144af97da5e99cec2fddd";
+const SPOONACULAR_API_KEY = "007ffe2498fc41bba2f221d39bfb8bf4";
 const BASE_URL = "https://api.spoonacular.com";
 
 async function apiGet(path, params = {}) {

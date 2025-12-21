@@ -650,7 +650,7 @@ out center;`.trim();
               onSubmitEditing={handleSearch}
             />
             <TouchableOpacity style={styles.searchBtn} onPress={handleSearch}>
-              <Text style={styles.searchBtnText}>Kërko</Text>
+              <Text style={styles.searchBtnText}>Kërkoooooo</Text>
             </TouchableOpacity>
           </View>
 
