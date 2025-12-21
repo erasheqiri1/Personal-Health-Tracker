@@ -37,12 +37,42 @@ Aplikacioni përdor Firebase Firestore për ruajtjen dhe menaxhimin e të dhëna
 ### Device features & optimizim performance
 Përdoren funksionalitete të pajisjes si GPS/Location, Camera/Image Picker dhe Local Notifications, të kombinuara me optimizime si FlatList, React.memo, useCallback dhe useMemo për një përvojë të qëndrueshme dhe të shpejtë.
 
+###  Testing
+Për fazën e testimit kemi përdorur Jest dhe React Testing Library.
+- Snapshot Tests: Verifikojnë që UI nuk ndryshon papritur.
+- Interaction Tests: Testimi i shtypjes së butonave (fireEvent).
+- Mocking: Kemi bërë mock Firebase-in për të simuluar Auth dhe Firestore.
+- Udhëzimi për testim: Run `npm test`
+
 ### Navigim dhe UI/UX
 Navigimi realizohet me Expo Router, ndërsa UI është i dizajnuar me ngjyra të njëtrajtshme, animacione të lehta dhe layout të qartë për përdorim intuitiv.
 
 ---------------------------------------------------------------
+##  Install & Run
 
-
+```bash
+git clone <https://github.com/erasheqiri1/Personal-Health-Tracker-11.git>
+cd myApp
+npm install
+npx expo start
+```
+----------------------------------
+### Teknologjite e perdorura
+| Component            | Technology |
+|---------------------|------------|
+| Frontend            | React Native |
+| Framework            | Expo |
+| Routing              | Expo Router |
+| Programming Language | JavaScript (ES6) |
+| Backend              | Firebase Firestore |
+| Authentication       | Firebase Authentication |
+| State Management     | React Hooks / Context API |
+| Maps & Location      | React Native Maps, Expo Location |
+| Notifications        | Expo Notifications |
+| Image Picker         | Expo Image Picker |
+| Local Storage        | AsyncStorage |
+| IDE                  | Visual Studio Code |
+| Version Control      | Git & GitHub |
 
 
 ## Screenshots
@@ -129,37 +159,8 @@ Këto përmirësime janë aplikuar në ekrane kryesore si `PlanMealsScreen`, `lo
 
 ---
 
-| Shtresa | Teknologjia |
-|--------|-------------|
-| Frontend | React Native (Expo) |
-| Routing | expo-router |
-| Backend | Firebase Firestore |
-| Auth | Firebase Authentication |
-| Hosting (Web) | Firebase Hosting |
-| API External | TheMealDB, OpenWeatherMap |
-| State | React Hooks |
 
 ---
 
 
-##  Install & Run
 
-```bash
-git clone <repo-url>
-cd myApp
-npm install
-npm run web
-```
-
-Hapeni me:
-- **Web (Browser)**
-
-
-  ##  Testing
-Për fazën e testimit kemi përdorur Jest dhe React Testing Library.
-- Snapshot Tests: Verifikojnë që UI nuk ndryshon papritur.
-- Interaction Tests: Testimi i shtypjes së butonave (fireEvent).
-- Mocking: Kemi bërë mock Firebase-in për të simuluar Auth dhe Firestore.
-
-Udhëzimi për testim:
-Run `npm test`
