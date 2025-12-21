@@ -1,11 +1,16 @@
-import '@testing-library/jest-native/extend-expect';
+jest.mock('firebase/auth', () => ({
+    getAuth: jest.fn(),
+    createUserWithEmailAndPassword: jest.fn(() => Promise.resolve({ user: { uid: '123' } })),
+    signInWithEmailAndPassword: jest.fn(() => Promise.resolve({ user: { uid: '123' } })),
+    updateProfile: jest.fn(() => Promise.resolve()),
+}));
 
-// Mock Expo Router
-jest.mock('expo-router', () => ({
-    Stack: { Screen: () => null },
-    router: {
-        push: jest.fn(),
-        replace: jest.fn(),
-    },
-    useLocalSearchParams: () => ({}),
+jest.mock('firebase/app', () => ({
+    initializeApp: jest.fn(),
+}));
+
+jest.mock('firebase/firestore', () => ({
+    getFirestore: jest.fn(),
+    collection: jest.fn(),
+    doc: jest.fn(),
 }));
