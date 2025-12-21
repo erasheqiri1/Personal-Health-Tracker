@@ -88,16 +88,17 @@ npx expo start
 ### User View
 <p align="center">
   <img src="myApp/assets/foto5.PNG" width="220" height="400"/>
-  <img src="myApp/assets/foto6.PNG" width="220" height="400"/>
-  <img src="myApp/assets/foto7.PNG" width="220" height="400"/>
+  <img src="myApp/assets/foto14.jpg" width="220" height="400"/>
+  <img src="myApp/assets/foto15.jpg" width="220" height="400"/>
   <img src="myApp/assets/foto8.PNG" width="220" height="400"/>
 </p>
 <p align="center">
   <img src="myApp/assets/foto9.PNG" width="190" height="400"/>
   <img src="myApp/assets/foto10.PNG" width="190" height="400"/>
   <img src="myApp/assets/foto11.PNG" width="190" height="400"/>
-    <img src="myApp/assets/foto12.PNG" width="190" height="400"/>
-    <img src="myApp/assets/foto13.PNG" width="190" height="400"/>
+    <img src="myApp/assets/foto18.jpg" width="190" height="400"/>
+      <img src="myApp/assets/foto17.jpg" width="190" height="400"/>
+
 </p>
 
 
