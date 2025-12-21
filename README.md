@@ -84,6 +84,7 @@ npx expo start
   <img src="myApp/assets/foto3.PNG" width="220" height="400"/>
   <img src="myApp/assets/foto4.PNG" width="220" height="400"/>
 </p>
+
 ### User View
 <p align="center">
   <img src="myApp/assets/foto5.PNG" width="220" height="400"/>
@@ -99,68 +100,7 @@ npx expo start
     <img src="myApp/assets/foto13.PNG" width="190" height="400"/>
 </p>
 
-##  Features (të zgjeruara)
 
-###  Authentication & User Security
-- Firebase Email/Password  
-- Social Logins (Web): Google, Microsoft, GitHub, Facebook  
-- Session Persistence (përdoruesi mbetet i kyçur edhe pas restart)  
-
----
-
-###  State Management & Logic
-- `useState`, `useEffect`, `useRouter`  
-- Handling errors, loading, async operations  
-- Data sync me Firebase Firestore
-
-  ---
-###  Food Tracking
-- Regjistrim i vakteve ditore  
-- Llogaritje automatike e kalorive  
-- Shfaqje nutriente: protein, carbs, fats  
-- Skanim i barkodit ushqimor *(opsionale në të ardhmen)*  
-
----
-###  Workout Tracking
-- Regjistrim i ushtrimeve ditore  
-- Kalori të djegura  
-- Plane ushtrimesh sipas qëllimit  
-
-- 
-###  Sleep Monitoring
-- Orët e gjumit  
-- Kualiteti i gjumit  
----
-
-###  Recipes API Integration
-- TheMealDB  
-- OpenWeatherMap (+rekomandime sipas motit)  
-  
-###  Navigation (expo-router)
-- Layout i pastër  
-- Navigim i thjeshtë për çdo moshë  
-- Bottom Tabs + Stack Navigation  
-
----
-
-##  UI/UX Improvements
-
-### Layout dhe Dizajn i Pastër
-- **Ngjyra të njëtrajtshme**: Përdorim i konstantave të centralizuara për ngjyrat (COLORS) në të gjithë aplikacionin, duke siguruar konsistencë vizuale.
-- **Spacing dhe Padding**: Konstantat e centralizuara (SPACING) për hapësira uniforme, duke përmirësuar lexueshmërinë dhe dizajnin e pastër.
-- **Stilizim i njëtrajtshëm**: Aplikimi i stileve të përbashkëta në komponente si karta, butona dhe tekste, duke përdorur React Native StyleSheet me konstante.
-
-### Animacione
-- **Button Press**: Zëvendësimi i butonave standard me `AnimatedButton` (bazuar në `TouchableOpacity` me `activeOpacity` për efekt fade), duke siguruar feedback vizual gjatë shtypjes.
-- **Modal me Fade-in/out**: Komponenti `Modal` i personalizuar me animacione fade për hapje dhe mbyllje, duke përmirësuar përvojën e përdoruesit.
-- **Animacion në Përfundim të Detyrave**: Përdorim i modalit të suksesit me animacion fade për konfirmimin e veprimeve (p.sh., ruajtja e vakteve), duke motivuar përdoruesin me feedback të qartë.
-
-Këto përmirësime janë aplikuar në ekrane kryesore si `PlanMealsScreen`, `login`, `signup`, dhe komponente të ripërdorshme si `AnimatedButton` dhe `Modal`. Aplikacioni tani ka një ndjesi më moderne dhe të rrjedhshme, me performancë të optimizuar përmes memoizimit (useMemo, useCallback, React.memo).
-
----
-
-
----
 
 
 
