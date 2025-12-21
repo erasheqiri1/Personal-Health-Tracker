@@ -358,7 +358,7 @@ out center;`.trim();
     }, [sleepMinutes])
   );
 
-  // ======== When we have coords + weather plan, fetch nearest park/gym ========
+
   useEffect(() => {
     const run = async () => {
       try {
@@ -395,7 +395,7 @@ out center;`.trim();
     run();
   }, [userCoords, plan.poiType, temperature, descriptionEn]);
 
-  // ======== Activity text (final) ========
+
   const activitySuggestion = (() => {
     if (!plan.text) return "";
 
@@ -411,7 +411,7 @@ out center;`.trim();
     return plan.text;
   })();
 
-  // ======== Sleep handlers ========
+
   const handleStartSleep = async () => {
     const now = new Date();
     setSleepStart(now);
@@ -459,7 +459,7 @@ out center;`.trim();
     }
   };
 
-  // ======== Recipe search handlers ========
+
   const handleSearchTextChange = (text) => {
     setSearchText(text);
     if (text.trim() === "") {
@@ -495,7 +495,7 @@ out center;`.trim();
     }
   };
 
-  // ======== Map region helpers ========
+
   const mapRegion = userCoords
     ? { latitude: userCoords.latitude, longitude: userCoords.longitude, latitudeDelta: 0.02, longitudeDelta: 0.02 }
     : { latitude: 42.6629, longitude: 21.1655, latitudeDelta: 0.05, longitudeDelta: 0.05 };
