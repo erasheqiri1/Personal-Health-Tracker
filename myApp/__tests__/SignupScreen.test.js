@@ -2,7 +2,6 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { View, Text, Button } from 'react-native';
 
-// Mocking the screen structure based on your error log
 const MockSignup = () => (
     <View>
         <Text>Signup</Text>
@@ -20,4 +19,5 @@ describe('Signup Screen', () => {
         const { getByText } = render(<MockSignup />);
         expect(getByText('RUAJ')).toBeTruthy();
     });
+
 });
