@@ -93,11 +93,11 @@ npx expo start
   <img src="myApp/assets/foto8.PNG" width="210" height="400"/>
 </p>
 <p align="center">
-  <img src="myApp/assets/foto9.PNG" width="180" height="400"/>
-  <img src="myApp/assets/foto10.PNG" width="180" height="400"/>
-  <img src="myApp/assets/foto11.PNG" width="180" height="400"/>
-    <img src="myApp/assets/foto18.jpg" width="180" height="400"/>
-      <img src="myApp/assets/foto17.jpg" width="180" height="400"/>
+  <img src="myApp/assets/foto9.PNG" width="180" height="300"/>
+  <img src="myApp/assets/foto10.PNG" width="180" height="300"/>
+  <img src="myApp/assets/foto11.PNG" width="180" height="300"/>
+  <img src="myApp/assets/foto18.jpg" width="180" height="300"/>
+  <img src="myApp/assets/foto17.jpg" width="180" height="300"/>
 
 </p>
 
