@@ -90,11 +90,12 @@ npx expo start
 
 ### User View
 <p align="center">
-  <img src="myApp/assets/foto5.PNG" width="210" height="400"/>
-  <img src="myApp/assets/foto14.jpg" width="210" height="400"/>
-  <img src="myApp/assets/foto15.jpg" width="210" height="400"/>
-  <img src="myApp/assets/foto8.PNG" width="210" height="400"/>
+  <img src="myApp/assets/foto5.PNG"  width="180" height="380" style="object-fit: cover"/>
+  <img src="myApp/assets/foto14.jpg" width="180" height="380" style="object-fit: cover"/>
+  <img src="myApp/assets/foto15.jpg" width="180" height="380" style="object-fit: cover"/>
+  <img src="myApp/assets/foto8.PNG"  width="180" height="380" style="object-fit: cover"/>
 </p>
+
 <p align="center">
   <img src="myApp/assets/foto9.PNG" width="160" height="300"/>
   <img src="myApp/assets/foto10.PNG" width="160" height="300"/>
