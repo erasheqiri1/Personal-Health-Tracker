@@ -80,11 +80,12 @@ npx expo start
 ### Admin View
 
 <p align="center">
-  <img src="myApp/assets/foto1.PNG" width="180"/>
-  <img src="myApp/assets/foto2.PNG" width="180"/>
-  <img src="myApp/assets/foto3.PNG" width="180"/>
-  <img src="myApp/assets/foto4.PNG" width="180"/>
+  <img src="myApp/assets/foto1.PNG" width="180" height="400" style="object-fit: cover"/>
+  <img src="myApp/assets/foto2.PNG" width="180" height="400" style="object-fit: cover"/>
+  <img src="myApp/assets/foto3.PNG" width="180" height="400" style="object-fit: cover"/>
+  <img src="myApp/assets/foto4.PNG" width="180" height="400" style="object-fit: cover"/>
 </p>
+
 
 
 ### User View
