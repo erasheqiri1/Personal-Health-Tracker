@@ -96,7 +96,7 @@ npx expo start
   <img src="myApp/assets/foto9.PNG" width="160" height="300"/>
   <img src="myApp/assets/foto10.PNG" width="160" height="300"/>
   <img src="myApp/assets/foto11.PNG" width="160" height="300"/>
-  <img src="myApp/assets/foto19.jpg" width="160" height="300"/>
+  <img src="myApp/assets/foto20.jpg" width="160" height="300"/>
   <img src="myApp/assets/foto17.jpg" width="160" height="300"/>
 
 </p>
