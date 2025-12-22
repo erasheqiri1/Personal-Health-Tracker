@@ -415,8 +415,15 @@ export default function Profile() {
           <Text style={{ fontSize: 16, fontWeight: "700", color: COLORS.textDark }}>Notifications</Text>
           <Text style={{ marginTop: 4, color: COLORS.textDark }}>Çdo 1 orë: “Mos harroni të pini ujë”</Text>
         </View>
+<Switch
+  value={waterReminderOn}
+  onValueChange={handleToggleWaterReminder}
+  disabled={notifBusy}
+  trackColor={{ false: '#ccc', true: '#355E3B' }}
+  thumbColor={waterReminderOn ? '#ffffff' : '#f4f3f4'}
+/>
 
-        <Switch value={waterReminderOn} onValueChange={handleToggleWaterReminder} disabled={notifBusy} />
+
       </View>
 
       <TouchableOpacity style={[styles.logoutButton, { borderColor: COLORS.green }]} onPress={handleLogout}>
