@@ -318,9 +318,10 @@ export default function WorkoutPlanScreen({
               selectedValue={selectedId}
               onValueChange={v => setSelectedId(v)}
               dropdownIconColor={COLORS.green}
+              
             >
               {exercises.map(ex => (
-                <Picker.Item key={ex.id} label={ex.title} value={ex.id} />
+                <Picker.Item key={ex.id} label={ex.title} value={ex.id} color="#000" />
               ))}
             </Picker>
 
@@ -329,9 +330,10 @@ export default function WorkoutPlanScreen({
               selectedValue={minutes}
               onValueChange={v => setMinutes(Number(v))}
               dropdownIconColor={COLORS.green}
+             
             >
               {[10, 20, 30, 40, 50, 60].map(m => (
-                <Picker.Item key={m} label={`${m} min`} value={m} />
+                <Picker.Item key={m} label={`${m} min`} value={m}   color="#000"/>
               ))}
             </Picker>
 
